@@ -1,0 +1,27 @@
+{
+  "bsonType": "object",
+  "required": [],
+  "permission": {
+    "read": false,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "_id": {
+      "description": "ID，系统自动生成"
+    },
+    "caricature_id": {
+      "bsonType": "string",
+      "description": "漫画id，参考opendb-caricature-data表",
+      "foreignKey": "opendb-caricature-data._id"
+    },
+    "current_number": {
+      "description": "当前集数"
+    },
+    "image_list": {
+      "bsonType": "array",
+      "description": "当前图片地址"
+    }
+  }
+}

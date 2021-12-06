@@ -1,0 +1,20 @@
+/* 这里是你自己写的全局css样式 */
+
+/* 滚动条美化方案开始 去掉下方css的注释即可 */
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+::-webkit-scrollbar-track {
+	background: rgba(135, 135, 135, 0.1);
+}
+::-webkit-scrollbar-thumb {
+	background: rgba(135, 135, 135, 0.4);
+	border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(135, 135, 135, 0.8);
+}
+
+/* 滚动条美化方案结束 */
