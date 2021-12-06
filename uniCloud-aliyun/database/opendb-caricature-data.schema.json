@@ -19,6 +19,10 @@
         "$env": "uid"
       }
     },
+    "author": {
+      "bsonType": "string",
+      "title": "作者名称"
+    },
     "category_id": {
       "bsonType": "string",
       "title": "分类",
@@ -29,13 +33,21 @@
         "field": "name as text, _id as value"
       }
     },
-    "title": {
+    "name": {
       "bsonType": "string",
-      "title": "标题",
-      "description": "标题",
-      "label": "标题",
+      "title": "漫画名称",
+      "description": "漫画名称",
+      "label": "漫画名称",
       "trim": "both"
     },
+    "picture": {
+      "bsonType": "string",
+      "title": "漫画封面",
+      "description": "漫画封面",
+      "label": "漫画封面",
+      "trim": "both"
+    },
+
     "content": {
       "bsonType": "array",
       "title": "漫画内容",
