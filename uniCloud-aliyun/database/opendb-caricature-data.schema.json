@@ -1,6 +1,6 @@
 {
   "bsonType": "object",
-  "required": ["user_id", "title", "content"],
+  "required": ["author", "name", "content"],
   "permission": {
     "read": "doc.user_id == auth.uid && doc.caricature_status == 0 || doc.caricature_status == 1",
     "create": "auth.uid != null",
@@ -27,9 +27,9 @@
       "bsonType": "string",
       "title": "分类",
       "description": "分类 id，参考`uni-news-categories`表",
-      "foreignKey": "opendb-news-categories._id",
+      "foreignKey": "opendb-caricature-categories._id",
       "enum": {
-        "collection": "opendb-news-categories",
+        "collection": "opendb-caricature-categories",
         "field": "name as text, _id as value"
       }
     },
@@ -40,41 +40,41 @@
       "label": "漫画名称",
       "trim": "both"
     },
-    "picture": {
+    "avatar": {
       "bsonType": "string",
-      "title": "漫画封面",
-      "description": "漫画封面",
-      "label": "漫画封面",
+      "title": "封面大图",
+      "description": "缩略图地址",
+      "label": "封面大图",
       "trim": "both"
     },
 
     "content": {
       "bsonType": "array",
       "title": "漫画内容",
-      "description": "漫画内容,包含有的集数",
+      "description": "漫画内容,包含有的目录",
       "label": "漫画内容",
       "trim": "right"
     },
     "excerpt": {
       "bsonType": "string",
-      "title": "漫画摘录",
-      "description": "漫画摘录",
+      "title": "漫画简介",
+      "description": "漫画简介",
       "label": "摘要",
       "trim": "both"
     },
     "caricature_status": {
       "bsonType": "int",
       "title": "漫画状态",
-      "description": "漫画状态：0 草稿箱 1 已发布",
+      "description": "漫画状态：0 连载中 1 已完结",
       "defaultValue": 0,
       "enum": [
         {
           "value": 0,
-          "text": "草稿箱"
+          "text": "连载中"
         },
         {
           "value": 1,
-          "text": "已发布"
+          "text": "已完结"
         }
       ]
     },
@@ -103,8 +103,8 @@
     },
     "is_essence": {
       "bsonType": "bool",
-      "title": "阅读加精",
-      "description": "阅读加精",
+      "title": "阅读推荐",
+      "description": "阅读推荐",
       "permission": {
         "write": false
       }
@@ -135,13 +135,6 @@
       "bsonType": "string",
       "description": "最后回复用户 id，参考`uni-id-users` 表",
       "foreignKey": "uni-id-users._id"
-    },
-    "avatar": {
-      "bsonType": "string",
-      "title": "封面大图",
-      "description": "缩略图地址",
-      "label": "封面大图",
-      "trim": "both"
     },
     "publish_date": {
       "bsonType": "timestamp",

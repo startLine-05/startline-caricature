@@ -42,7 +42,7 @@
     <!-- 表格组件结束 -->
 
     <!-- 添加或编辑的弹窗开始 -->
-    <vk-data-dialog v-model="form1.props.show" :title="form1.props.title" width="500px" mode="form" :close-on-click-modal="false">
+    <vk-data-dialog v-model="form1.props.show" :title="form1.props.title" width="600px" mode="form" :close-on-click-modal="false">
       <vk-data-form
         v-model="form1.data"
         :rules="form1.props.rules"
@@ -79,40 +79,32 @@ export default {
       table1: {
         // 表格数据请求地址
         action: "admin/caricature/sys/getList",
+
         // 表格字段显示规则
         columns: [
           { key: "_id", title: "id", type: "text", width: 200 },
-          { key: "avatar", title: "头像", type: "avatar", width: 80 },
-          { key: "title", title: "用户名", type: "text", defaultValue: "未设置" },
-          { key: "author", title: "昵称", type: "text", defaultValue: "未设置" },
-          { key: "comment", title: "备注", type: "text" },
-          { key: "mobile", title: "手机号", type: "text", width: 120, defaultValue: "未绑定" },
+          { key: "avatar", title: "封面大图", type: "image", width: 150 },
+          { key: "name", title: "漫画名称", type: "text", width: 140, defaultValue: "暂无" },
+          { key: "author", title: "作者", type: "text", width: 140, defaultValue: "暂无" },
+          { key: "excerpt", title: "简介", type: "text", width: 250 },
           {
-            key: "status",
-            title: "账户状态",
+            key: "caricature_status",
+            title: "漫画状态",
             type: "tag",
             width: 120,
             defaultValue: 0,
             data: [
-              { value: 1, label: "冻结", tagType: "danger" },
-              { value: 0, label: "正常", tagType: "success" },
+              { value: 0, label: "连载中", tagType: "primary" },
+              { value: 1, label: "已完结", tagType: "success" },
             ],
           },
-          { key: "register_date", title: "注册时间", type: "time", width: 160, sortable: "custom" },
-          { key: "last_login_date", title: "最后登录时间", type: "dateDiff", width: 130, defaultValue: "从未登录过", sortable: "custom" },
-          { key: "last_login_ip", title: "最后登录ip", type: "text", width: 120, defaultValue: "从未登录过" },
-          { key: "role", title: "角色", type: "text", width: 120, defaultValue: "无" },
-          {
-            key: "allow_login_background",
-            title: "允许登录后台",
-            type: "tag",
-            width: 120,
-            defaultValue: false,
-            data: [
-              { value: true, label: "允许", tagType: "success" },
-              { value: false, label: "禁止", tagType: "danger" },
-            ],
-          },
+          { key: "view_count", title: "阅读数量", type: "text" },
+          { key: "like_count", title: "喜欢数量", type: "text" },
+          { key: "comment_count", title: "评论数量", type: "text" },
+          { key: "publish_date", title: "创建时间", type: "time", width: 160, sortable: "custom" },
+          { key: "last_modify_date", title: "最后修改时间", type: "time", width: 160 },
+          { key: "is_sticky", title: "是否置顶", type: "switch", width: 120 },
+          { key: "is_essence", title: "是否推荐", type: "switch", width: 120 },
         ],
         // 多选框选中的值
         multipleSelection: [],
@@ -141,25 +133,29 @@ export default {
           action: "",
           // 表单字段显示规则
           columns: [
-            { key: "name", title: "漫画名称", type: "text", show: ["add"] },
+            { key: "name", title: "漫画名称", type: "text" },
             { key: "author", title: "作者", type: "text" },
-            { key: "excerpt", title: "漫画漫画摘录", type: "textarea", maxlength: "99", showWordLimit: true, autosize: { minRows: 2, maxRows: 10 } },
+            { key: "avatar", title: "漫画封面", type: "file", limit: 1, accept: ".jpg" },
+            {
+              key: "excerpt",
+              title: "漫画摘录",
+              type: "textarea",
+              maxlength: "300",
+              showWordLimit: true,
+              autosize: { minRows: 2, maxRows: 10 },
+            },
           ],
           // 表单对应的验证规则
           rules: {
             name: [
-              {
-                required: true,
-                validator: vk.pubfn.validator("title"),
-                message: "",
-                trigger: "blur",
-              },
+              { required: true, message: "漫画名称为必填字段", trigger: "blur" },
+              { min: 2, max: 10, message: "漫画名称长度在 2 到 20 个字符", trigger: "blur" },
             ],
             author: [
-              { required: true, message: "昵称为必填字段", trigger: "blur" },
+              { required: true, message: "作者为必填字段", trigger: "blur" },
               { min: 2, max: 10, message: "昵称长度在 2 到 20 个字符", trigger: "blur" },
             ],
-            excerpt: [{ required: true, message: "漫画漫画摘录为必填字段", trigger: "blur" }],
+            excerpt: [{ required: true, message: "漫画简介为必填字段", trigger: "blur" }],
           },
           // add 代表添加 update 代表修改
           formType: "add",

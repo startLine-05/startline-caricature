@@ -19,6 +19,9 @@
     "current_number": {
       "description": "当前集数"
     },
+    "current_name": {
+      "description": "当前集数名称"
+    },
     "image_list": {
       "bsonType": "array",
       "description": "当前图片地址"
