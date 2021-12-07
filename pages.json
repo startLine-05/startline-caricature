@@ -10,7 +10,8 @@
         "navigationBarTitleText": "登录"
       }
     },
-    { "path": "pages/caricature/list" }
+    { "path": "pages/caricature/list" },
+    { "path": "pages/sort/list" }
   ],
   "subPackages": [
     {

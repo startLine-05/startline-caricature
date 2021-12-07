@@ -1,7 +1,7 @@
 module.exports = {
   /**
-   * 修改数据
-   * @url admin/kong/sys/update 前端调用的url参数地址
+   * 数据删除
+   * @url admin/kong/sys/delete 前端调用的url参数地址
    * data 请求参数 说明
    * res 返回参数说明
    * @param {Number} code 错误码，0表示成功
@@ -13,22 +13,14 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "ok" };
     // 业务逻辑开始-----------------------------------------------------------
-    let {
-      _id,
-      name, //漫画名称
-    } = data;
-    // 这里需要把 params1 params2 params3 改成你数据库里允许用户添加的字段
-    if (vk.pubfn.isNullOne(_id)) {
-      return { code: -1, msg: "参数错误" };
+    let { _id } = data;
+    if (vk.pubfn.isNull(_id)) {
+      return { code: -1, msg: "id不能为空" };
     }
-    let dbName = "opendb-caricature-data";
-    await vk.baseDao.updateById({
+    let dbName = "opendb-caricature-categories";
+    await vk.baseDao.deleteById({
       dbName,
       id: _id,
-      dataJson: {
-        author,
-        category_id,
-      },
     });
     // 业务逻辑结束-----------------------------------------------------------
     return res;

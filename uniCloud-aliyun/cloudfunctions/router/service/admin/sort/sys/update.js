@@ -13,21 +13,18 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "ok" };
     // 业务逻辑开始-----------------------------------------------------------
-    let {
-      _id,
-      name, //漫画名称
-    } = data;
+    let { _id, name, description } = data;
     // 这里需要把 params1 params2 params3 改成你数据库里允许用户添加的字段
     if (vk.pubfn.isNullOne(_id)) {
       return { code: -1, msg: "参数错误" };
     }
-    let dbName = "opendb-caricature-data";
+    let dbName = "opendb-caricature-categories";
     await vk.baseDao.updateById({
       dbName,
       id: _id,
       dataJson: {
-        author,
-        category_id,
+        name,
+        description,
       },
     });
     // 业务逻辑结束-----------------------------------------------------------

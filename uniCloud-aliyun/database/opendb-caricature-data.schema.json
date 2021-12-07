@@ -110,19 +110,12 @@
       }
     },
     "comment_status": {
-      "bsonType": "int",
+      "bsonType": "bool",
       "title": "开放评论",
-      "description": "评论状态：0 关闭  1 开放",
-      "enum": [
-        {
-          "value": 0,
-          "text": "关闭"
-        },
-        {
-          "value": 1,
-          "text": "开放"
-        }
-      ]
+      "description": "评论状态",
+      "permission": {
+        "write": false
+      }
     },
     "comment_count": {
       "bsonType": "int",

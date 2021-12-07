@@ -62,15 +62,21 @@
     ]
   },
   {
-    "menu_id": "my_system",
-    "name": "你的系统名",
-    "icon": "el-icon-s-tools",
+    "menu_id": "my_caricature",
+    "name": "漫画设置",
+    "icon": "el-icon-collection",
     "sort": 1,
     "children": [
       {
-        "menu_id": "my_system-caricature",
-        "name": "用户管理",
-        "icon": "el-icon-s-tools",
+        "menu_id": "my_caricature_sort",
+        "name": "分类管理",
+        "icon": "el-icon-folder-opened",
+        "url": "/pages/sort/list"
+      },
+      {
+        "menu_id": "my_caricature_list",
+        "name": "漫画管理",
+        "icon": "el-icon-collection-tag",
         "url": "/pages/caricature/list"
       }
     ]

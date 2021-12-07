@@ -30,11 +30,6 @@
       "pattern": "^(http://|https://|/|./|@/)\\S",
       "trim": "both"
     },
-    "sort": {
-      "bsonType": "int",
-      "description": "类别显示顺序",
-      "label": "排序"
-    },
     "caricature_count": {
       "bsonType": "int",
       "description": "该类别下漫画数量"
