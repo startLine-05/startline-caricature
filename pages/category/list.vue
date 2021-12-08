@@ -70,8 +70,8 @@ export default {
         // 表格字段显示规则
         columns: [
           { key: "_id", title: "id", type: "text", width: 200 },
-          { key: "name", title: "漫画名称", type: "text", width: 140 },
-          { key: "description", title: "简介", type: "text", width: 250, defaultValue: "暂无" },
+          { key: "name", title: "分类名称", type: "text", width: 140 },
+          { key: "description", title: "分类描述", type: "text", width: 250, defaultValue: "暂无" },
           { key: "create_date", title: "创建时间", type: "time", width: 160 },
         ],
       },
@@ -109,8 +109,8 @@ export default {
           // 表单对应的验证规则
           rules: {
             name: [
-              { required: true, message: "漫画名称为必填字段", trigger: "blur" },
-              { min: 2, max: 4, message: "漫画名称长度在 2 到 4 个字符", trigger: "blur" },
+              { required: true, message: "分类名称为必填字段", trigger: "blur" },
+              { min: 2, max: 4, message: "分类名称长度在 2 到 4 个字符", trigger: "blur" },
             ],
           },
           // add 代表添加 update 代表修改

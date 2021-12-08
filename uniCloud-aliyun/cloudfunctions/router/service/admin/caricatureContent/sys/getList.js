@@ -18,7 +18,7 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
-    let dbName = "opendb-caricature-data";
+    let dbName = "opendb-caricature-content";
     res = await vk.baseDao.getTableData({
       dbName,
       data,

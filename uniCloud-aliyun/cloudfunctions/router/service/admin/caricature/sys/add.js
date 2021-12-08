@@ -28,7 +28,7 @@ module.exports = {
       excerpt, //简介
       is_sticky = false, //是否置顶
       is_essence = false, //是否为推荐
-      comment_status = true, //开放评论状态
+      comment_status = false, //开放评论状态
     } = data;
     // 这里需要把 params1 params2 params3 改成你数据库里允许用户添加的字段
     let dbName = "opendb-caricature-data";

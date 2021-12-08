@@ -168,7 +168,7 @@ export default {
               type: "select",
               data: () => this.this.categoryData,
             },
-            { key: "avatar", title: "漫画封面", type: "image", limit: 1 },
+            { key: "avatar", title: "漫画封面", type: "file", limit: 1, accept: ".jpg" },
             { key: "is_sticky", title: "是否置顶", type: "switch", width: 120, activeValue: true, inactiveValue: false },
             { key: "is_essence", title: "是否推荐", type: "switch", width: 120, activeValue: true, inactiveValue: false },
             { key: "comment_status", title: "评论状态", type: "switch", width: 120, activeValue: true, inactiveValue: false },
@@ -212,18 +212,6 @@ export default {
     // 页面数据初始化函数
     init(options) {
       originalForms["form1"] = vk.pubfn.copyObject(that.form1);
-      this.getCategoryData();
-    },
-    //查询分类列表
-    getCategoryData() {
-      this.vk
-        .callFunction({
-          url: "admin/category/kh/getList",
-        })
-        .then((res) => {
-          categoryData = res.data;
-          this.queryForm1.columns[3].data = res.data;
-        });
     },
     // 页面跳转
     pageTo(path) {
@@ -256,14 +244,14 @@ export default {
     // 显示添加页面
     addBtn() {
       that.resetForm();
-      that.form1.props.action = "admin/caricature/sys/add";
+      that.form1.props.action = "admin/caricatureContent/sys/add";
       that.form1.props.formType = "add";
       that.form1.props.title = "添加";
       that.form1.props.show = true;
     },
     // 显示修改页面
     updateBtn({ item }) {
-      that.form1.props.action = "admin/caricature/sys/update";
+      that.form1.props.action = "admin/caricatureContent/sys/update";
       that.form1.props.formType = "update";
       that.form1.props.title = "编辑";
       that.form1.props.show = true;
@@ -272,7 +260,7 @@ export default {
     // 删除按钮
     deleteBtn({ item, deleteFn }) {
       deleteFn({
-        action: "admin/caricature/sys/delete",
+        action: "admin/caricatureContent/sys/delete",
         data: {
           _id: item._id,
         },
