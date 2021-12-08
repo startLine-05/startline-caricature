@@ -15,7 +15,14 @@ module.exports = {
     // 业务逻辑开始-----------------------------------------------------------
     let {
       _id,
-      name, //漫画名称
+      author, //作者名称
+      category_id, //分类id
+      name, //名称
+      avatar, //封面
+      excerpt, //简介
+      is_sticky = false, //是否置顶
+      is_essence = false, //是否为推荐
+      comment_status = true, //开放评论状态
     } = data;
     // 这里需要把 params1 params2 params3 改成你数据库里允许用户添加的字段
     if (vk.pubfn.isNullOne(_id)) {
@@ -27,7 +34,13 @@ module.exports = {
       id: _id,
       dataJson: {
         author,
+        author,
         category_id,
+        name,
+        avatar,
+        excerpt,
+        is_sticky,
+        is_essence,
       },
     });
     // 业务逻辑结束-----------------------------------------------------------

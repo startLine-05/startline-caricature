@@ -12,7 +12,6 @@ module.exports = {
     let { customUtil, uniID, config, pubFun, vk, db, _ } = util;
     let { uid } = data;
     let res = { code: 0, msg: "ok" };
-    console.log("contextssss", userInfo, uid, originalParam.context);
     // 业务逻辑开始-----------------------------------------------------------
     const caricature_status = 0, //漫画状态
       view_count = 0, //阅读数量
@@ -36,7 +35,7 @@ module.exports = {
     res.id = await vk.baseDao.add({
       dbName,
       dataJson: {
-        user_id = uid, //发布人id
+        user_id: uid, //发布人id
         author,
         category_id,
         name,

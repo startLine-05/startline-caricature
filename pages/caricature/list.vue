@@ -66,6 +66,7 @@
 var that; // 当前页面对象
 var vk = uni.vk; // vk实例
 var originalForms = {}; // 表单初始化数据
+var categoryData = []; //分类数据
 
 export default {
   data() {
@@ -98,6 +99,16 @@ export default {
               { value: 1, label: "已完结", tagType: "success" },
             ],
           },
+          {
+            key: "category_id",
+            title: "漫画分类",
+            type: "html",
+            width: 120,
+            formatter: function (val) {
+              const index = categoryData.findIndex((v) => v.value === val);
+              return `<text>${categoryData[index] ? categoryData[index].label : "未分类"}</text>`;
+            },
+          },
           { key: "view_count", title: "阅读数量", type: "text" },
           { key: "like_count", title: "喜欢数量", type: "text" },
           { key: "comment_count", title: "评论数量", type: "text" },
@@ -123,6 +134,14 @@ export default {
           { key: "_id", title: "ID", type: "text", width: 140, mode: "=" },
           { key: "name", title: "漫画名称", type: "text", width: 140, mode: "%%" },
           { key: "author", title: "作者", type: "text", width: 140, mode: "%%" },
+          {
+            key: "category_id",
+            title: "漫画分类",
+            type: "select",
+            mode: "=",
+            data: this.categoryData,
+          },
+          // { key: "category_id", title: "作者", type: "text", width: 140, mode: "=" },
         ],
       },
       form1: {
@@ -143,6 +162,12 @@ export default {
               maxlength: "300",
               showWordLimit: true,
               autosize: { minRows: 2, maxRows: 10 },
+            },
+            {
+              key: "category_id",
+              title: "漫画分类",
+              type: "select",
+              data: () => this.this.categoryData,
             },
             { key: "avatar", title: "漫画封面", type: "file", limit: 1, accept: ".jpg" },
             { key: "is_sticky", title: "是否置顶", type: "switch", width: 120, activeValue: true, inactiveValue: false },
@@ -167,8 +192,6 @@ export default {
           show: false,
         },
       },
-      // 其他弹窗表单
-      formDatas: {},
       // 表单相关结束 -----------------------------------------------------------
     };
   },
@@ -190,6 +213,18 @@ export default {
     // 页面数据初始化函数
     init(options) {
       originalForms["form1"] = vk.pubfn.copyObject(that.form1);
+      this.getCategoryData();
+    },
+    //查询分类列表
+    getCategoryData() {
+      this.vk
+        .callFunction({
+          url: "admin/category/kh/getList",
+        })
+        .then((res) => {
+          categoryData = res.data;
+          this.queryForm1.columns[3].data = res.data;
+        });
     },
     // 页面跳转
     pageTo(path) {
@@ -263,7 +298,11 @@ export default {
   // 过滤器
   filters: {},
   // 计算属性
-  computed: {},
+  computed: {
+    categoryData() {
+      return categoryData;
+    },
+  },
 };
 </script>
 <style lang="scss" scoped></style>
