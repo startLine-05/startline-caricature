@@ -30,7 +30,8 @@
       :action="table1.action"
       :columns="table1.columns"
       :query-form-param="queryForm1"
-      :right-btns="['detail_auto', 'update', 'delete']"
+      :right-btns="['detail_auto', 'update', 'delete', 'more']"
+      :right-btns-more="table1.rightBtnsMore"
       :selection="true"
       :row-no="true"
       :pagination="true"
@@ -80,7 +81,14 @@ export default {
       table1: {
         // 表格数据请求地址
         action: "admin/caricature/sys/getList",
-
+        rightBtnsMore: [
+          {
+            title: "内容管理",
+            onClick: function (row) {
+              vk.navigateTo(`/pages/caricature/content?id=${row._id}`);
+            },
+          },
+        ],
         // 表格字段显示规则
         columns: [
           { key: "_id", title: "id", type: "text", width: 200 },

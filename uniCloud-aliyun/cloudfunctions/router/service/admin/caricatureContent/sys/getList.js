@@ -17,11 +17,16 @@ module.exports = {
     let { customUtil, uniID, config, pubFun, vk, db, _ } = util;
     let { uid } = data;
     let res = { code: 0, msg: "" };
+    console.log('sssss',data)
     // 业务逻辑开始-----------------------------------------------------------
     let dbName = "opendb-caricature-content";
     res = await vk.baseDao.getTableData({
       dbName,
       data,
+      // 强制where条件，比如这里设置了只能查询当前登录用户的数据
+      whereJson: {
+        caricature_id:data.formData.caricature_id
+      }, 
     });
     return res;
   },

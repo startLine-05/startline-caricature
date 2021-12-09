@@ -13,19 +13,34 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "ok" };
     // 业务逻辑开始-----------------------------------------------------------
+    const dbName = "opendb-caricature-content";
     const create_date = new Date().getTime(); //创建时间
     let {
-      name, //名称
-      description, //描述
+      caricature_id, //漫画id
+      current_number, //当前集数编号 不可重复
+      current_name, //当前集数名称
+      image_list,
     } = data;
-    // 这里需要把 params1 params2 params3 改成你数据库里允许用户添加的字段
-    let dbName = "opendb-caricature-content";
+
+    //判断是否存在集数
+    let num = await vk.baseDao.count({
+      dbName,
+      whereJson: {
+        caricature_id,
+        current_number,
+      },
+    });
+    if (num > 0) {
+      return { code: -1, msg: "该集数已存在,请勿重复添加" };
+    }
+
     res.id = await vk.baseDao.add({
       dbName,
       dataJson: {
-        name,
-        description,
-        caricature_count: 0,
+        caricature_id,
+        current_number,
+        current_name,
+        image_list,
         create_date,
       },
     });

@@ -17,7 +17,6 @@
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item :command="1">批量操作1</el-dropdown-item>
-            <el-dropdown-item :command="2">批量操作2</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
@@ -67,7 +66,7 @@ var that; // 当前页面对象
 var vk = uni.vk; // vk实例
 var originalForms = {}; // 表单初始化数据
 var categoryData = []; //分类数据
-
+var options = {};
 export default {
   data() {
     // 页面数据变量
@@ -79,8 +78,7 @@ export default {
       // 表格相关开始 -----------------------------------------------------------
       table1: {
         // 表格数据请求地址
-        action: "admin/caricature/sys/getList",
-
+        action: "admin/caricatureContent/sys/getList",
         // 表格字段显示规则
         columns: [
           { key: "_id", title: "id", type: "text", width: 200 },
@@ -98,16 +96,6 @@ export default {
               { value: 0, label: "连载中", tagType: "primary" },
               { value: 1, label: "已完结", tagType: "success" },
             ],
-          },
-          {
-            key: "category_id",
-            title: "漫画分类",
-            type: "html",
-            width: 120,
-            formatter: function (val) {
-              const index = categoryData.findIndex((v) => v.value === val);
-              return `<text>${categoryData[index] ? categoryData[index].label : "未分类"}</text>`;
-            },
           },
           { key: "view_count", title: "阅读数量", type: "text" },
           { key: "like_count", title: "喜欢数量", type: "text" },
@@ -128,62 +116,36 @@ export default {
       // 查询表单请求数据
       queryForm1: {
         // 查询表单数据源，可在此设置默认值
-        formData: {},
+        formData: {
+          caricature_id: "",
+        },
         // 查询表单的字段规则 fieldName:指定数据库字段名,不填默认等于key
         columns: [
           { key: "_id", title: "ID", type: "text", width: 140, mode: "=" },
           { key: "name", title: "漫画名称", type: "text", width: 140, mode: "%%" },
           { key: "author", title: "作者", type: "text", width: 140, mode: "%%" },
-          {
-            key: "category_id",
-            title: "漫画分类",
-            type: "select",
-            mode: "=",
-            data: this.categoryData,
-          },
         ],
       },
       form1: {
         // 表单请求数据，此处可以设置默认值
-        data: {},
+        data: {
+          caricature_id:'',
+        },
         // 表单属性
         props: {
           // 表单请求地址
           action: "",
           // 表单字段显示规则
           columns: [
-            { key: "name", title: "漫画名称", type: "text" },
-            { key: "author", title: "作者", type: "text" },
-            {
-              key: "excerpt",
-              title: "漫画简介",
-              type: "textarea",
-              maxlength: "300",
-              showWordLimit: true,
-              autosize: { minRows: 2, maxRows: 10 },
-            },
-            {
-              key: "category_id",
-              title: "漫画分类",
-              type: "select",
-              data: () => this.this.categoryData,
-            },
-            { key: "avatar", title: "漫画封面", type: "file", limit: 1, accept: ".jpg" },
-            { key: "is_sticky", title: "是否置顶", type: "switch", width: 120, activeValue: true, inactiveValue: false },
-            { key: "is_essence", title: "是否推荐", type: "switch", width: 120, activeValue: true, inactiveValue: false },
-            { key: "comment_status", title: "评论状态", type: "switch", width: 120, activeValue: true, inactiveValue: false },
+            { key: "current_number", title: "当前集数", type: "number" },
+            { key: "current_name", title: "当前集数名称", type: "text" },
           ],
           // 表单对应的验证规则
           rules: {
-            name: [
+            current_name: [
               { required: true, message: "漫画名称为必填字段", trigger: "blur" },
-              { min: 2, max: 10, message: "漫画名称长度在 2 到 20 个字符", trigger: "blur" },
+              { min: 2, max: 10, message: "漫画名称长度在 2 到 10 个字符", trigger: "blur" },
             ],
-            author: [
-              { required: true, message: "作者为必填字段", trigger: "blur" },
-              { min: 2, max: 10, message: "昵称长度在 2 到 20 个字符", trigger: "blur" },
-            ],
-            excerpt: [{ required: true, message: "漫画简介为必填字段", trigger: "blur" }],
           },
           // add 代表添加 update 代表修改
           formType: "add",
@@ -198,7 +160,8 @@ export default {
   onLoad(options = {}) {
     that = this;
     vk = that.vk;
-    that.options = options;
+    options = options;
+    console.log("ssss", options);
     that.init(options);
   },
   // 监听 - 页面【首次渲染完成时】执行。注意如果渲染速度快，会在页面进入动画完成前触发
@@ -211,6 +174,7 @@ export default {
   methods: {
     // 页面数据初始化函数
     init(options) {
+      this.queryForm1.formData.caricature_id = options.id
       originalForms["form1"] = vk.pubfn.copyObject(that.form1);
     },
     // 页面跳转
@@ -286,8 +250,8 @@ export default {
   filters: {},
   // 计算属性
   computed: {
-    categoryData() {
-      return categoryData;
+    options() {
+      return options;
     },
   },
 };
