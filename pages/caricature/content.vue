@@ -43,6 +43,7 @@
     <!-- 添加或编辑的弹窗开始 -->
     <vk-data-dialog v-model="form1.props.show" :title="form1.props.title" width="600px" mode="form" :close-on-click-modal="false">
       <vk-data-form
+        ref="form1"
         v-model="form1.data"
         :rules="form1.props.rules"
         :action="form1.props.action"
@@ -53,7 +54,8 @@
           form1.props.show = false;
           refresh();
         "
-      ></vk-data-form>
+      >
+      </vk-data-form>
     </vk-data-dialog>
     <!-- 添加或编辑的弹窗结束 -->
 
@@ -82,29 +84,9 @@ export default {
         // 表格字段显示规则
         columns: [
           { key: "_id", title: "id", type: "text", width: 200 },
-          { key: "avatar", title: "封面大图", type: "image", width: 150 },
-          { key: "name", title: "漫画名称", type: "text", width: 140, defaultValue: "暂无" },
-          { key: "author", title: "作者", type: "text", width: 140, defaultValue: "暂无" },
-          { key: "excerpt", title: "简介", type: "text", width: 250 },
-          {
-            key: "caricature_status",
-            title: "漫画状态",
-            type: "tag",
-            width: 120,
-            defaultValue: 0,
-            data: [
-              { value: 0, label: "连载中", tagType: "primary" },
-              { value: 1, label: "已完结", tagType: "success" },
-            ],
-          },
-          { key: "view_count", title: "阅读数量", type: "text" },
-          { key: "like_count", title: "喜欢数量", type: "text" },
-          { key: "comment_count", title: "评论数量", type: "text" },
-          { key: "publish_date", title: "创建时间", type: "time", width: 160, sortable: "custom" },
-          { key: "last_modify_date", title: "最后修改时间", type: "time", width: 160 },
-          { key: "is_sticky", title: "是否置顶", type: "switch", width: 120 },
-          { key: "is_essence", title: "是否推荐", type: "switch", width: 120 },
-          { key: "comment_status", title: "评论开放状态", type: "switch", width: 120 },
+          { key: "current_number", title: "漫画集数编号", type: "text", width: 140 },
+          { key: "current_name", title: "当前集数名称", type: "text", width: 250 },
+          { key: "_add_time_str", title: "创建时间", type: "text", width: 250 },
         ],
         // 多选框选中的值
         multipleSelection: [],
@@ -122,14 +104,14 @@ export default {
         // 查询表单的字段规则 fieldName:指定数据库字段名,不填默认等于key
         columns: [
           { key: "_id", title: "ID", type: "text", width: 140, mode: "=" },
-          { key: "name", title: "漫画名称", type: "text", width: 140, mode: "%%" },
-          { key: "author", title: "作者", type: "text", width: 140, mode: "%%" },
+          { key: "current_number", title: "漫画集数编号", type: "text", width: 140, mode: "=" },
+          { key: "current_name", title: "当前集数名称", type: "text", width: 140, mode: "%%" },
         ],
       },
       form1: {
         // 表单请求数据，此处可以设置默认值
         data: {
-          caricature_id:'',
+          caricature_id: "",
         },
         // 表单属性
         props: {
@@ -138,13 +120,25 @@ export default {
           // 表单字段显示规则
           columns: [
             { key: "current_number", title: "当前集数", type: "number" },
-            { key: "current_name", title: "当前集数名称", type: "text" },
+            { key: "current_name", title: "集数名称", type: "text" },
+            {
+              key: "imageList",
+              title: "image类型",
+              type: "image",
+              limit: 9,
+              httpRequest: (obj) => {
+                console.log("obj", obj);
+                console.log(this.$refs.form1, "sssss");
+              },
+              // autoUpload: false,
+            },
           ],
           // 表单对应的验证规则
           rules: {
+            current_number: [{ required: true, message: "当前集数为必填字段", trigger: "blur" }],
             current_name: [
-              { required: true, message: "漫画名称为必填字段", trigger: "blur" },
-              { min: 2, max: 10, message: "漫画名称长度在 2 到 10 个字符", trigger: "blur" },
+              { required: true, message: "集数名称为必填字段", trigger: "blur" },
+              { min: 2, max: 10, message: "集数名称长度在 2 到 10 个字符", trigger: "blur" },
             ],
           },
           // add 代表添加 update 代表修改
@@ -153,6 +147,8 @@ export default {
           show: false,
         },
       },
+      list: [],
+      loading: true,
       // 表单相关结束 -----------------------------------------------------------
     };
   },
@@ -161,7 +157,6 @@ export default {
     that = this;
     vk = that.vk;
     options = options;
-    console.log("ssss", options);
     that.init(options);
   },
   // 监听 - 页面【首次渲染完成时】执行。注意如果渲染速度快，会在页面进入动画完成前触发
@@ -172,9 +167,29 @@ export default {
   onHide() {},
   // 函数
   methods: {
+    cancel() {
+      console.log(this.$refs.form1.$slots, "sssss");
+      // this.$refs.form1.$slots;
+    },
+    // 审核通过执行的方法
+    adopt(status) {
+      that.$refs.form1.submitForm({
+        // data为额外提交的参数，真正提交的参数为form1.data+这里的data
+        data: {
+          status: status,
+        },
+        success: (data) => {
+          // 提交成功
+        },
+        fail: (data) => {
+          // 提交失败
+        },
+      });
+    },
     // 页面数据初始化函数
     init(options) {
-      this.queryForm1.formData.caricature_id = options.id
+      this.queryForm1.formData = options;
+      this.form1.data = options;
       originalForms["form1"] = vk.pubfn.copyObject(that.form1);
     },
     // 页面跳转
@@ -220,6 +235,7 @@ export default {
       that.form1.props.title = "编辑";
       that.form1.props.show = true;
       that.form1.data = item;
+      console.log("sssss", this.$refs.form1, that.$refs.table1, this.list);
     },
     // 删除按钮
     deleteBtn({ item, deleteFn }) {

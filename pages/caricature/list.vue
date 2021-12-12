@@ -85,7 +85,7 @@ export default {
           {
             title: "内容管理",
             onClick: function (row) {
-              vk.navigateTo(`/pages/caricature/content?id=${row._id}`);
+              vk.navigateTo(`/pages/caricature/content?caricature_id=${row._id}`);
             },
           },
         ],
