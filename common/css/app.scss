@@ -3,18 +3,39 @@
 /* 滚动条美化方案开始 去掉下方css的注释即可 */
 
 ::-webkit-scrollbar {
-	width: 6px;
-	height: 6px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-	background: rgba(135, 135, 135, 0.1);
+  background: rgba(135, 135, 135, 0.1);
 }
 ::-webkit-scrollbar-thumb {
-	background: rgba(135, 135, 135, 0.4);
-	border-radius: 6px;
+  background: rgba(135, 135, 135, 0.4);
+  border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(135, 135, 135, 0.8);
+  background: rgba(135, 135, 135, 0.8);
 }
 
 /* 滚动条美化方案结束 */
+/*flex布局*/
+.u-f,
+.u-f-ac,
+.u-f-ajc,
+.u-f-ajs {
+  display: flex;
+}
+/*垂直方向居中*/
+.u-f-ac,
+.u-f-ajc,
+.u-f-ajs {
+  align-items: center;
+}
+/*垂直竖直方向居中*/
+.u-f-ajc {
+  justify-content: center;
+}
+/*两边对齐*/
+.u-f-ajs {
+  justify-content: space-around;
+}

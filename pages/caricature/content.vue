@@ -29,7 +29,8 @@
       :action="table1.action"
       :columns="table1.columns"
       :query-form-param="queryForm1"
-      :right-btns="['detail_auto', 'update', 'delete']"
+      :right-btns-more="table1.rightBtnsMore"
+      :right-btns="['detail_auto', 'update', 'delete', 'more']"
       :selection="true"
       :row-no="true"
       :pagination="true"
@@ -58,7 +59,21 @@
       </vk-data-form>
     </vk-data-dialog>
     <!-- 添加或编辑的弹窗结束 -->
-
+    <el-dialog :title="`${current_row.current_name}(${current_row.current_name})-编辑内容`" :visible.sync="visibleEditImg">
+      <div class="flex">
+        <block v-for="(item, index) of current_row.image_list" :key="index">
+          <vk-data-upload v-model="item.img_url" :limit="1"></vk-data-upload>
+        </block>
+        <div class="u-f-ajc">
+          <i class="el-icon-upload el-icon--right"></i>
+        </div>
+        <!-- <el-button type="primary"> 添加第{{ current_row.image_list.length }}页数<i class="el-icon-upload el-icon--right"></i> </el-button> -->
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="visibleEditImg = false">取 消</el-button>
+        <el-button type="primary" @click="sumbitImgLis">确 定</el-button>
+      </div>
+    </el-dialog>
     <!-- 页面内容结束 -->
   </view>
 </template>
@@ -67,8 +82,6 @@
 var that; // 当前页面对象
 var vk = uni.vk; // vk实例
 var originalForms = {}; // 表单初始化数据
-var categoryData = []; //分类数据
-var options = {};
 export default {
   data() {
     // 页面数据变量
@@ -81,6 +94,14 @@ export default {
       table1: {
         // 表格数据请求地址
         action: "admin/caricatureContent/sys/getList",
+        rightBtnsMore: [
+          {
+            title: "内容管理",
+            onClick: (row) => {
+              this.editImgList(row);
+            },
+          },
+        ],
         // 表格字段显示规则
         columns: [
           { key: "_id", title: "id", type: "text", width: 200 },
@@ -148,8 +169,10 @@ export default {
           show: false,
         },
       },
-      list: [],
-      loading: true,
+      visibleEditImg: false,
+      current_row: {
+        image_list: [],
+      },
       // 表单相关结束 -----------------------------------------------------------
     };
   },
@@ -168,24 +191,22 @@ export default {
   onHide() {},
   // 函数
   methods: {
-    cancel() {
-      console.log(this.$refs.form1.$slots, "sssss");
-      // this.$refs.form1.$slots;
+    editImgList(row) {
+      console.log(row);
+      this.current_row = row;
+      this.visibleEditImg = true;
     },
-    // 审核通过执行的方法
-    adopt(status) {
-      that.$refs.form1.submitForm({
-        // data为额外提交的参数，真正提交的参数为form1.data+这里的data
-        data: {
-          status: status,
-        },
-        success: (data) => {
-          // 提交成功
-        },
-        fail: (data) => {
-          // 提交失败
-        },
-      });
+    sumbitImgLis() {
+      console.log(this.current_row);
+      vk.callFunction({
+        url: "admin/caricatureContent/sys/updateImg",
+        title: "请求中...",
+        data: this.current_row,
+      })
+        .then((res) => {
+          console.log(res, "sss");
+        })
+        .catch((err) => {});
     },
     // 页面数据初始化函数
     init(options) {
@@ -289,4 +310,14 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="less" scoped>
+.flex {
+  display: flex;
+  align-items: center;
+}
+.add {
+  width: 100px;
+  height: 100px;
+  border: 5px;
+}
+</style>
