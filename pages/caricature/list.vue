@@ -174,7 +174,7 @@ export default {
               key: "category_id",
               title: "漫画分类",
               type: "select",
-              data: () => this.this.categoryData,
+              data: () => this.categoryData,
             },
             { key: "avatar", title: "漫画封面", type: "image", limit: 1 },
             { key: "is_sticky", title: "是否置顶", type: "switch", width: 120, activeValue: true, inactiveValue: false },

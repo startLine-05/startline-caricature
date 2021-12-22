@@ -48,8 +48,8 @@
         :rules="form1.props.rules"
         :action="form1.props.action"
         :form-type="form1.props.formType"
-        :columns="form1.props.columns"
-        label-width="80px"
+        :columns="columns"
+        label-width="100px"
         @success="
           form1.props.show = false;
           refresh();
@@ -118,21 +118,22 @@ export default {
           // 表单请求地址
           action: "",
           // 表单字段显示规则
-          columns: [
-            { key: "current_number", title: "当前集数", type: "number" },
-            { key: "current_name", title: "集数名称", type: "text" },
-            {
-              key: "imageList",
-              title: "image类型",
-              type: "image",
-              limit: 9,
-              httpRequest: (obj) => {
-                console.log("obj", obj);
-                console.log(this.$refs.form1, "sssss");
-              },
-              // autoUpload: false,
-            },
-          ],
+          // columns: [
+          //   { key: "current_number", title: "当前集数", type: "number" },
+          //   { key: "current_name", title: "集数名称", type: "text" },
+          //   this.form1.formType == "add"
+          //     ? {
+          //         key: "image_list",
+          //         title: "初始化内容",
+          //         type: "image",
+          //         limit: 99,
+          //         disabled: () => {
+          //           console.log("sssss", this.form1.formType == "add" ? true : false);
+          //           return this.form1.formType == "add" ? true : false;
+          //         },
+          //       }
+          //     : {},
+          // ],
           // 表单对应的验证规则
           rules: {
             current_number: [{ required: true, message: "当前集数为必填字段", trigger: "blur" }],
@@ -235,7 +236,6 @@ export default {
       that.form1.props.title = "编辑";
       that.form1.props.show = true;
       that.form1.data = item;
-      console.log("sssss", this.$refs.form1, that.$refs.table1, this.list);
     },
     // 删除按钮
     deleteBtn({ item, deleteFn }) {
@@ -266,8 +266,25 @@ export default {
   filters: {},
   // 计算属性
   computed: {
-    options() {
-      return options;
+    columns() {
+      console.log(that.form1.props.formType);
+      if (that.form1.props.formType == "add") {
+        return [
+          { key: "current_number", title: "当前集数", type: "number" },
+          { key: "current_name", title: "集数名称", type: "text" },
+          {
+            key: "image_list",
+            title: "初始化内容",
+            type: "image",
+            limit: 99,
+          },
+        ];
+      } else {
+        return [
+          { key: "current_number", title: "当前集数", type: "number" },
+          { key: "current_name", title: "集数名称", type: "text" },
+        ];
+      }
     },
   },
 };
