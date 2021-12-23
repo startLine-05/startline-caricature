@@ -1,18 +1,13 @@
 <template>
   <view class="page-body">
-    <!-- 页面内容开始 -->
+    <vk-data-table-query v-model="queryForm.formData" :columns="queryForm.columns" @search="search"></vk-data-table-query>
 
-    <!-- 表格搜索组件开始 -->
-    <vk-data-table-query v-model="queryForm1.formData" :columns="queryForm1.columns" @search="search"></vk-data-table-query>
-    <!-- 表格搜索组件结束 -->
-
-    <!-- 自定义按钮区域开始 -->
     <view>
       <el-row>
         <el-button type="success" size="small" icon="el-icon-circle-plus-outline" @click="addBtn">添加</el-button>
         <!-- 批量操作 -->
-        <el-dropdown v-if="table1.multipleSelection" :split-button="false" trigger="click" @command="batchBtn">
-          <el-button type="danger" size="small" style="margin-left: 20rpx" :disabled="table1.multipleSelection.length === 0">
+        <el-dropdown v-if="table.multipleSelection" :split-button="false" trigger="click" @command="batchBtn">
+          <el-button type="danger" size="small" style="margin-left: 20rpx" :disabled="table.multipleSelection.length === 0">
             批量操作<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
@@ -25,11 +20,11 @@
 
     <!-- 表格组件开始 -->
     <vk-data-table
-      ref="table1"
-      :action="table1.action"
-      :columns="table1.columns"
-      :query-form-param="queryForm1"
-      :right-btns-more="table1.rightBtnsMore"
+      ref="table"
+      :action="table.action"
+      :columns="table.columns"
+      :query-form-param="queryForm"
+      :right-btns-more="table.rightBtnsMore"
       :right-btns="['detail_auto', 'update', 'delete', 'more']"
       :selection="true"
       :row-no="true"
@@ -42,17 +37,17 @@
     <!-- 表格组件结束 -->
 
     <!-- 添加或编辑的弹窗开始 -->
-    <vk-data-dialog v-model="form1.props.show" :title="form1.props.title" width="600px" mode="form" :close-on-click-modal="false">
+    <vk-data-dialog v-model="form.props.show" :title="form.props.title" width="600px" mode="form" :close-on-click-modal="false">
       <vk-data-form
-        ref="form1"
-        v-model="form1.data"
-        :rules="form1.props.rules"
-        :action="form1.props.action"
-        :form-type="form1.props.formType"
+        ref="form"
+        v-model="form.data"
+        :rules="form.props.rules"
+        :action="form.props.action"
+        :form-type="form.props.formType"
         :columns="columns"
         label-width="100px"
         @success="
-          form1.props.show = false;
+          form.props.show = false;
           refresh();
         "
       >
@@ -61,13 +56,14 @@
     <!-- 添加或编辑的弹窗结束 -->
     <el-dialog :title="`${current_row.current_name}(${current_row.current_name})-编辑内容`" :visible.sync="visibleEditImg">
       <div class="flex">
-        <block v-for="(item, index) of current_row.image_list" :key="index">
-          <vk-data-upload v-model="item.img_url" :limit="1"></vk-data-upload>
-        </block>
-        <div class="u-f-ajc">
-          <i class="el-icon-upload el-icon--right"></i>
+        <div v-for="(item, index) of current_row.image_list" :key="index">
+          <div class="u-f-ajc" :style="{ flexDirection: 'column', padding: '10px' }">
+            <el-badge :value="index + 1" class="item">
+              <vk-data-upload v-model="item.img_url" list-type="picture-card" :limit="1"> </vk-data-upload>
+            </el-badge>
+            <el-button type="text" size="mini" @click="soltImg(index)">插入内容</el-button>
+          </div>
         </div>
-        <!-- <el-button type="primary"> 添加第{{ current_row.image_list.length }}页数<i class="el-icon-upload el-icon--right"></i> </el-button> -->
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="visibleEditImg = false">取 消</el-button>
@@ -86,12 +82,10 @@ export default {
   data() {
     // 页面数据变量
     return {
-      // 页面是否请求中或加载中
-      loading: false,
       // init请求返回的数据
       data: {},
       // 表格相关开始 -----------------------------------------------------------
-      table1: {
+      table: {
         // 表格数据请求地址
         action: "admin/caricatureContent/sys/getList",
         rightBtnsMore: [
@@ -117,7 +111,7 @@ export default {
       // 表格相关结束 -----------------------------------------------------------
       // 表单相关开始 -----------------------------------------------------------
       // 查询表单请求数据
-      queryForm1: {
+      queryForm: {
         // 查询表单数据源，可在此设置默认值
         formData: {
           caricature_id: "",
@@ -129,7 +123,7 @@ export default {
           { key: "current_name", title: "当前集数名称", type: "text", width: 140, mode: "%%" },
         ],
       },
-      form1: {
+      form: {
         // 表单请求数据，此处可以设置默认值
         data: {
           caricature_id: "",
@@ -138,23 +132,6 @@ export default {
         props: {
           // 表单请求地址
           action: "",
-          // 表单字段显示规则
-          // columns: [
-          //   { key: "current_number", title: "当前集数", type: "number" },
-          //   { key: "current_name", title: "集数名称", type: "text" },
-          //   this.form1.formType == "add"
-          //     ? {
-          //         key: "image_list",
-          //         title: "初始化内容",
-          //         type: "image",
-          //         limit: 99,
-          //         disabled: () => {
-          //           console.log("sssss", this.form1.formType == "add" ? true : false);
-          //           return this.form1.formType == "add" ? true : false;
-          //         },
-          //       }
-          //     : {},
-          // ],
           // 表单对应的验证规则
           rules: {
             current_number: [{ required: true, message: "当前集数为必填字段", trigger: "blur" }],
@@ -171,6 +148,7 @@ export default {
       },
       visibleEditImg: false,
       current_row: {
+        _id: "",
         image_list: [],
       },
       // 表单相关结束 -----------------------------------------------------------
@@ -196,23 +174,40 @@ export default {
       this.current_row = row;
       this.visibleEditImg = true;
     },
+    soltImg(index) {
+      console.log(index, this.current_row.image_list);
+      this.current_row.image_list.splice(index + 1, 0, {
+        img_url: "",
+      });
+    },
     sumbitImgLis() {
-      console.log(this.current_row);
+      let { image_list } = this.current_row;
+      const listTemp = [];
+      image_list.forEach((v, index) => {
+        if (v.img_url) {
+          listTemp.push({
+            img_url: v.img_url,
+            page_num: index + 1,
+          });
+        }
+      });
       vk.callFunction({
         url: "admin/caricatureContent/sys/updateImg",
         title: "请求中...",
-        data: this.current_row,
+        data: { ...this.current_row, image_list: listTemp },
       })
         .then((res) => {
           console.log(res, "sss");
+          this.visibleEditImg = false;
+          this.refresh();
         })
         .catch((err) => {});
     },
     // 页面数据初始化函数
     init(options) {
-      this.queryForm1.formData = options;
-      this.form1.data = options;
-      originalForms["form1"] = vk.pubfn.copyObject(that.form1);
+      this.queryForm.formData = options;
+      this.form.data = options;
+      originalForms["form"] = vk.pubfn.copyObject(that.form);
     },
     // 页面跳转
     pageTo(path) {
@@ -224,39 +219,39 @@ export default {
     },
     // 搜索
     search() {
-      that.$refs.table1.search();
+      that.$refs.table.search();
     },
     // 刷新
     refresh() {
-      that.$refs.table1.refresh();
+      that.$refs.table.refresh();
     },
     // 获取当前选中的行的数据
     getCurrentRow() {
-      return that.$refs.table1.getCurrentRow();
+      return that.$refs.table.getCurrentRow();
     },
     // 监听 - 行的选中高亮事件
     currentChange(val) {
-      that.table1.selectItem = val;
+      that.table.selectItem = val;
     },
     // 当选择项发生变化时会触发该事件
     selectionChange(list) {
-      that.table1.multipleSelection = list;
+      that.table.multipleSelection = list;
     },
     // 显示添加页面
     addBtn() {
       that.resetForm();
-      that.form1.props.action = "admin/caricatureContent/sys/add";
-      that.form1.props.formType = "add";
-      that.form1.props.title = "添加";
-      that.form1.props.show = true;
+      that.form.props.action = "admin/caricatureContent/sys/add";
+      that.form.props.formType = "add";
+      that.form.props.title = "添加";
+      that.form.props.show = true;
     },
     // 显示修改页面
     updateBtn({ item }) {
-      that.form1.props.action = "admin/caricatureContent/sys/update";
-      that.form1.props.formType = "update";
-      that.form1.props.title = "编辑";
-      that.form1.props.show = true;
-      that.form1.data = item;
+      that.form.props.action = "admin/caricatureContent/sys/update";
+      that.form.props.formType = "update";
+      that.form.props.title = "编辑";
+      that.form.props.show = true;
+      that.form.data = item;
     },
     // 删除按钮
     deleteBtn({ item, deleteFn }) {
@@ -288,8 +283,8 @@ export default {
   // 计算属性
   computed: {
     columns() {
-      console.log(that.form1.props.formType);
-      if (that.form1.props.formType == "add") {
+      console.log(that.form.props.formType);
+      if (that.form.props.formType == "add") {
         return [
           { key: "current_number", title: "当前集数", type: "number" },
           { key: "current_name", title: "集数名称", type: "text" },
@@ -314,10 +309,6 @@ export default {
 .flex {
   display: flex;
   align-items: center;
-}
-.add {
-  width: 100px;
-  height: 100px;
-  border: 5px;
+  flex-wrap: wrap;
 }
 </style>

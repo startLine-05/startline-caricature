@@ -19,7 +19,7 @@ module.exports = {
       return { code: -1, msg: "参数错误" };
     }
     for (let i = 0; i < image_list.length; i++) {
-      if (image_list[i].img_url) {
+      if (!image_list[i].img_url) {
         return { code: -1, msg: "存在图片为空的页数" };
       }
     }

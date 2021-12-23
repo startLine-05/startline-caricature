@@ -3,7 +3,7 @@
     <!-- 页面内容开始 -->
 
     <!-- 表格搜索组件开始 -->
-    <vk-data-table-query v-model="queryForm1.formData" :columns="queryForm1.columns" @search="search"></vk-data-table-query>
+    <vk-data-table-query v-model="queryForm.formData" :columns="queryForm.columns" @search="search"></vk-data-table-query>
     <!-- 表格搜索组件结束 -->
 
     <!-- 自定义按钮区域开始 -->
@@ -11,8 +11,8 @@
       <el-row>
         <el-button type="success" size="small" icon="el-icon-circle-plus-outline" @click="addBtn">添加</el-button>
         <!-- 批量操作 -->
-        <el-dropdown v-if="table1.multipleSelection" :split-button="false" trigger="click" @command="batchBtn">
-          <el-button type="danger" size="small" style="margin-left: 20rpx" :disabled="table1.multipleSelection.length === 0">
+        <el-dropdown v-if="table.multipleSelection" :split-button="false" trigger="click" @command="batchBtn">
+          <el-button type="danger" size="small" style="margin-left: 20rpx" :disabled="table.multipleSelection.length === 0">
             批量操作<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
@@ -26,12 +26,12 @@
 
     <!-- 表格组件开始 -->
     <vk-data-table
-      ref="table1"
-      :action="table1.action"
-      :columns="table1.columns"
-      :query-form-param="queryForm1"
+      ref="table"
+      :action="table.action"
+      :columns="table.columns"
+      :query-form-param="queryForm"
       :right-btns="['detail_auto', 'update', 'delete', 'more']"
-      :right-btns-more="table1.rightBtnsMore"
+      :right-btns-more="table.rightBtnsMore"
       :selection="true"
       :row-no="true"
       :pagination="true"
@@ -43,16 +43,16 @@
     <!-- 表格组件结束 -->
 
     <!-- 添加或编辑的弹窗开始 -->
-    <vk-data-dialog v-model="form1.props.show" :title="form1.props.title" width="600px" mode="form" :close-on-click-modal="false">
+    <vk-data-dialog v-model="form.props.show" :title="form.props.title" width="600px" mode="form" :close-on-click-modal="false">
       <vk-data-form
-        v-model="form1.data"
-        :rules="form1.props.rules"
-        :action="form1.props.action"
-        :form-type="form1.props.formType"
-        :columns="form1.props.columns"
+        v-model="form.data"
+        :rules="form.props.rules"
+        :action="form.props.action"
+        :form-type="form.props.formType"
+        :columns="form.props.columns"
         label-width="80px"
         @success="
-          form1.props.show = false;
+          form.props.show = false;
           refresh();
         "
       ></vk-data-form>
@@ -78,7 +78,7 @@ export default {
       // init请求返回的数据
       data: {},
       // 表格相关开始 -----------------------------------------------------------
-      table1: {
+      table: {
         // 表格数据请求地址
         action: "admin/caricature/sys/getList",
         rightBtnsMore: [
@@ -134,7 +134,7 @@ export default {
       // 表格相关结束 -----------------------------------------------------------
       // 表单相关开始 -----------------------------------------------------------
       // 查询表单请求数据
-      queryForm1: {
+      queryForm: {
         // 查询表单数据源，可在此设置默认值
         formData: {},
         // 查询表单的字段规则 fieldName:指定数据库字段名,不填默认等于key
@@ -151,7 +151,7 @@ export default {
           },
         ],
       },
-      form1: {
+      form: {
         // 表单请求数据，此处可以设置默认值
         data: {},
         // 表单属性
@@ -219,7 +219,7 @@ export default {
   methods: {
     // 页面数据初始化函数
     init(options) {
-      originalForms["form1"] = vk.pubfn.copyObject(that.form1);
+      originalForms["form"] = vk.pubfn.copyObject(that.form);
       this.getCategoryData();
     },
     //查询分类列表
@@ -230,7 +230,7 @@ export default {
         })
         .then((res) => {
           categoryData = res.data;
-          this.queryForm1.columns[3].data = res.data;
+          this.queryForm.columns[3].data = res.data;
         });
     },
     // 页面跳转
@@ -243,39 +243,39 @@ export default {
     },
     // 搜索
     search() {
-      that.$refs.table1.search();
+      that.$refs.table.search();
     },
     // 刷新
     refresh() {
-      that.$refs.table1.refresh();
+      that.$refs.table.refresh();
     },
     // 获取当前选中的行的数据
     getCurrentRow() {
-      return that.$refs.table1.getCurrentRow();
+      return that.$refs.table.getCurrentRow();
     },
     // 监听 - 行的选中高亮事件
     currentChange(val) {
-      that.table1.selectItem = val;
+      that.table.selectItem = val;
     },
     // 当选择项发生变化时会触发该事件
     selectionChange(list) {
-      that.table1.multipleSelection = list;
+      that.table.multipleSelection = list;
     },
     // 显示添加页面
     addBtn() {
       that.resetForm();
-      that.form1.props.action = "admin/caricature/sys/add";
-      that.form1.props.formType = "add";
-      that.form1.props.title = "添加";
-      that.form1.props.show = true;
+      that.form.props.action = "admin/caricature/sys/add";
+      that.form.props.formType = "add";
+      that.form.props.title = "添加";
+      that.form.props.show = true;
     },
     // 显示修改页面
     updateBtn({ item }) {
-      that.form1.props.action = "admin/caricature/sys/update";
-      that.form1.props.formType = "update";
-      that.form1.props.title = "编辑";
-      that.form1.props.show = true;
-      that.form1.data = item;
+      that.form.props.action = "admin/caricature/sys/update";
+      that.form.props.formType = "update";
+      that.form.props.title = "编辑";
+      that.form.props.show = true;
+      that.form.data = item;
     },
     // 删除按钮
     deleteBtn({ item, deleteFn }) {
