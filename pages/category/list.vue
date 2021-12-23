@@ -1,8 +1,5 @@
 <template>
   <view class="page-body">
-    <!-- 页面内容开始 -->
-
-    <!-- 表格搜索组件开始 -->
     <vk-data-table-query v-model="queryForm.formData" :columns="queryForm.columns" @search="search"></vk-data-table-query>
     <!-- 表格搜索组件结束 -->
 
@@ -115,7 +112,7 @@ export default {
           },
           // add 代表添加 update 代表修改
           formType: "add",
-          // 是否显示表单1 的弹窗
+          // 是否显示表单 的弹窗
           show: false,
         },
       },
@@ -127,7 +124,6 @@ export default {
   // 监听 - 页面每次【加载时】执行(如：前进)
   onLoad(options = {}) {
     that = this;
-    vk = that.vk;
     that.options = options;
     that.init(options);
   },
@@ -141,15 +137,11 @@ export default {
   methods: {
     // 页面数据初始化函数
     init(options) {
-      originalForms["form"] = vk.pubfn.copyObject(that.form);
-    },
-    // 页面跳转
-    pageTo(path) {
-      vk.navigateTo(path);
+      originalForms["form"] = vk.pubfn.copyObject(this.form);
     },
     // 表单重置
     resetForm() {
-      vk.pubfn.resetForm(originalForms, that);
+      vk.pubfn.resetForm(originalForms, this);
     },
     // 搜索
     search() {

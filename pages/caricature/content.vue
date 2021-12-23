@@ -5,15 +5,6 @@
     <view>
       <el-row>
         <el-button type="success" size="small" icon="el-icon-circle-plus-outline" @click="addBtn">添加</el-button>
-        <!-- 批量操作 -->
-        <el-dropdown v-if="table.multipleSelection" :split-button="false" trigger="click" @command="batchBtn">
-          <el-button type="danger" size="small" style="margin-left: 20rpx" :disabled="table.multipleSelection.length === 0">
-            批量操作<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :command="1">批量操作1</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
       </el-row>
     </view>
     <!-- 自定义按钮区域结束 -->
@@ -54,16 +45,9 @@
       </vk-data-form>
     </vk-data-dialog>
     <!-- 添加或编辑的弹窗结束 -->
-    <el-dialog :title="`${current_row.current_name}(${current_row.current_name})-编辑内容`" :visible.sync="visibleEditImg">
-      <div class="flex">
-        <div v-for="(item, index) of current_row.image_list" :key="index">
-          <div class="u-f-ajc" :style="{ flexDirection: 'column', padding: '10px' }">
-            <el-badge :value="index + 1" class="item">
-              <vk-data-upload v-model="item.img_url" list-type="picture-card" :limit="1"> </vk-data-upload>
-            </el-badge>
-            <el-button type="text" size="mini" @click="soltImg(index)">插入内容</el-button>
-          </div>
-        </div>
+    <el-dialog :title="`${current_row.current_name}-${current_row.current_number}-编辑内容`" :destroy-on-close="true" :visible.sync="visibleEditImg">
+      <div style="overflow: auto; height: 400px">
+        <shmily-drag-image v-if="visibleEditImg" ref="dragImage" :number="999" :cols="3" :list.sync="image_list" :custom="false"></shmily-drag-image>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="visibleEditImg = false">取 消</el-button>
@@ -78,7 +62,11 @@
 var that; // 当前页面对象
 var vk = uni.vk; // vk实例
 var originalForms = {}; // 表单初始化数据
+import shmilyDragImage from "@/components/shmily-drag-image/shmily-drag-image.vue";
 export default {
+  components: {
+    shmilyDragImage,
+  },
   data() {
     // 页面数据变量
     return {
@@ -146,11 +134,10 @@ export default {
           show: false,
         },
       },
+      //编辑图片弹框
       visibleEditImg: false,
-      current_row: {
-        _id: "",
-        image_list: [],
-      },
+      current_row: {},
+      image_list: [],
       // 表单相关结束 -----------------------------------------------------------
     };
   },
@@ -169,49 +156,11 @@ export default {
   onHide() {},
   // 函数
   methods: {
-    editImgList(row) {
-      console.log(row);
-      this.current_row = row;
-      this.visibleEditImg = true;
-    },
-    soltImg(index) {
-      console.log(index, this.current_row.image_list);
-      this.current_row.image_list.splice(index + 1, 0, {
-        img_url: "",
-      });
-    },
-    sumbitImgLis() {
-      let { image_list } = this.current_row;
-      const listTemp = [];
-      image_list.forEach((v, index) => {
-        if (v.img_url) {
-          listTemp.push({
-            img_url: v.img_url,
-            page_num: index + 1,
-          });
-        }
-      });
-      vk.callFunction({
-        url: "admin/caricatureContent/sys/updateImg",
-        title: "请求中...",
-        data: { ...this.current_row, image_list: listTemp },
-      })
-        .then((res) => {
-          console.log(res, "sss");
-          this.visibleEditImg = false;
-          this.refresh();
-        })
-        .catch((err) => {});
-    },
     // 页面数据初始化函数
     init(options) {
       this.queryForm.formData = options;
       this.form.data = options;
       originalForms["form"] = vk.pubfn.copyObject(that.form);
-    },
-    // 页面跳转
-    pageTo(path) {
-      vk.navigateTo(path);
     },
     // 表单重置
     resetForm() {
@@ -262,18 +211,50 @@ export default {
         },
       });
     },
-    // 监听 - 批量操作的按钮点击事件
-    batchBtn(index) {
-      switch (index) {
-        case 1:
-          vk.toast("批量操作按钮1");
-          break;
-        case 2:
-          vk.toast("批量操作按钮2");
-          break;
-        default:
-          break;
+    editImgList(row) {
+      console.log(row);
+      this.current_row = row;
+      this.image_list = row.image_list;
+      this.visibleEditImg = true;
+    },
+    async sumbitImgLis() {
+      const { image_list } = this;
+      const resList = await this.uploadFileList(image_list);
+      console.log("tttt", resList);
+
+      vk.callFunction({
+        url: "admin/caricatureContent/sys/updateImg",
+        title: "请求中...",
+        data: { ...this.current_row, image_list: resList },
+      })
+        .then((res) => {
+          console.log(res, "sss");
+          this.visibleEditImg = false;
+          this.refresh();
+        })
+        .catch((err) => {});
+    },
+    //同步上传方法
+    async uploadFileList(image_list) {
+      const list = [];
+      for (let i = 0; i < image_list.length; i++) {
+        if (image_list[i].includes("blob")) {
+          console.log("image_list[i]", image_list[i]);
+          list.push(
+            vk.callFunctionUtil
+              .uploadFile({
+                title: "上传中...",
+                filePath: image_list[i],
+                // suffix: "png", // 不传suffix会自动获取，但H5环境下获取不到后缀，但可以通过file.name 获取
+                provider: "unicloud",
+              })
+              .then((res) => res.url)
+          );
+        } else {
+          list.push(Promise.resolve(image_list[i]));
+        }
       }
+      return Promise.all(list);
     },
   },
   // 监听属性
@@ -305,10 +286,4 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped>
-.flex {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-</style>
+<style lang="less" scoped></style>

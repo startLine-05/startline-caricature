@@ -34,12 +34,7 @@ module.exports = {
     if (num > 0) {
       return { code: -1, msg: "该集数已存在,请勿重复添加" };
     }
-    image_list = image_list.map((v, index) => {
-      return {
-        page_num: index + 1,
-        img_url: v,
-      };
-    });
+
     res.id = await vk.baseDao.add({
       dbName,
       dataJson: {

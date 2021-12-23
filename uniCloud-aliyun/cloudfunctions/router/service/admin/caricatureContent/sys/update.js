@@ -37,7 +37,6 @@ module.exports = {
       dbName,
       id: _id,
     });
-    console.log(info);
 
     if (num > 0 && info.current_number !== current_number) {
       return { code: -1, msg: "该集数已存在,请勿重复添加" };

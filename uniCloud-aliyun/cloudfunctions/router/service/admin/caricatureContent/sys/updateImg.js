@@ -14,18 +14,11 @@ module.exports = {
     let res = { code: 0, msg: "ok" };
     // 业务逻辑开始-----------------------------------------------------------
     let { _id, image_list } = data;
-    // 这里需要把 params1 params2 params3 改成你数据库里允许用户添加的字段
+
     if (vk.pubfn.isNullOne(_id)) {
       return { code: -1, msg: "参数错误" };
     }
-    for (let i = 0; i < image_list.length; i++) {
-      if (!image_list[i].img_url) {
-        return { code: -1, msg: "存在图片为空的页数" };
-      }
-    }
-
     const dbName = "opendb-caricature-content";
-
     await vk.baseDao.updateById({
       dbName,
       id: _id,
