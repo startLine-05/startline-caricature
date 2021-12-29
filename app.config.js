@@ -91,8 +91,8 @@ export default {
     custom: {
       // 左侧菜单样式
       leftMenu: {
-        backgroundColor: "#2d3a4b",
-        subBackgroundColor: "#2d3a4b",
+        backgroundColor: "#304156",
+        subBackgroundColor: "#011528",
         textColor: "#f0f0f0",
         activeTextColor: "#ffffff",
         activeBackgroundColor: "#2d8cf0",
