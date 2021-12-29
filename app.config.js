@@ -40,6 +40,7 @@ export default {
   staticUrl: {
     // 顶部导航
     navBar: {
+      loginLogo: "/static/logo.png",
       // 方形Logo
       logo: "/static/DCT.ico",
       // 横幅 Logo
@@ -84,25 +85,25 @@ export default {
   // 主题配置
   theme: {
     // 当前使用哪个主题
-    use: "blackWhite", // white blackWhite black custom
+    use: "custom", // white blackWhite black custom(自定义)
     ...themeConfig,
     // 自定义主题
     custom: {
       // 左侧菜单样式
       leftMenu: {
-        backgroundColor: "",
-        subBackgroundColor: "",
-        textColor: "",
-        activeTextColor: "",
-        activeBackgroundColor: "",
-        hoverTextColor: "",
-        hoverBackgroundColor: "",
-        boxShadow: "",
+        backgroundColor: "#2d3a4b",
+        subBackgroundColor: "#2d3a4b",
+        textColor: "#f0f0f0",
+        activeTextColor: "#ffffff",
+        activeBackgroundColor: "#2d8cf0",
+        hoverTextColor: "#ffffff",
+        hoverBackgroundColor: "#545f6c",
+        boxShadow: "2px 0 4px rgba(0,21,4,0.25)",
       },
       // 顶部菜单样式
       topMenu: {
-        backgroundColor: "",
-        textColor: "",
+        backgroundColor: "#ffffff",
+        textColor: "#999999",
       },
     },
   },
