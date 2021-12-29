@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * 查询多条记录 分页
+   * 漫画集数（包含内容）查询多条记录 分页
    * @url admin/kong/sys/getList 前端调用的url参数地址
    * data 请求参数 说明
    * @param {Number}         pageIndex 当前页码
@@ -19,10 +19,13 @@ module.exports = {
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
     let dbName = "opendb-caricature-content";
+    if (!data.formData.caricature_id) {
+      return { code: -1, msg: "漫画id不能为空" };
+    }
     res = await vk.baseDao.getTableData({
       dbName,
       data,
-      // 强制where条件，比如这里设置了只能查询当前登录用户的数据
+      // 强制where条件，只能查询当前漫画id 对应的内容
       whereJson: {
         caricature_id: data.formData.caricature_id,
       },

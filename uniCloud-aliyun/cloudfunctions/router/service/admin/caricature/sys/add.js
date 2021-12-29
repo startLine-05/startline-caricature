@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * 添加单条数据
+   * 添加单条漫画数据
    * @url admin/kong/sys/add 前端调用的url参数地址
    * data 请求参数 说明
    * res 返回参数说明
@@ -13,6 +13,7 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "ok" };
     // 业务逻辑开始-----------------------------------------------------------
+    //初始化基本数据
     const caricature_status = 0, //漫画状态
       view_count = 0, //阅读数量
       like_count = 0, //喜欢数量

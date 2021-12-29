@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * 修改数据
+   * 修改漫画单集内容数据
    * @url admin/kong/sys/update 前端调用的url参数地址
    * data 请求参数 说明
    * res 返回参数说明

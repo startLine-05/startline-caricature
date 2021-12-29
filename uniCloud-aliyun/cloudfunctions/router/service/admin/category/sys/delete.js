@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * 数据删除
+   * 单条漫画分类数据删除
    * @url admin/kong/sys/delete 前端调用的url参数地址
    * data 请求参数 说明
    * res 返回参数说明

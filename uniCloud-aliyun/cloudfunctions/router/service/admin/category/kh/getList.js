@@ -1,13 +1,8 @@
 module.exports = {
   /**
-   * 查询分类记录公共
+   * 查询漫画分类
    * @url admin/kong/sys/getList 前端调用的url参数地址
-   * data 请求参数 说明
-   * @param {Number}         pageIndex 当前页码
-   * @param {Number}         pageSize  每页显示数量
-   * @param {Array<Object>}  sortRule  排序规则
-   * @param {object}         formData  查询条件数据源
-   * @param {Array<Object>}  columns   查询条件规则
+   * data 请求参数 说明 不需要参数
    * res 返回参数说明
    * @param {Number}         code      错误码，0表示成功
    * @param {String}         msg       详细信息

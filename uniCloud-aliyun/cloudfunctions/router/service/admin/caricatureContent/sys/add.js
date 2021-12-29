@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * 添加单条数据
+   * 添加单集漫画内容（图片）数据
    * @url admin/kong/sys/add 前端调用的url参数地址
    * data 请求参数 说明
    * res 返回参数说明

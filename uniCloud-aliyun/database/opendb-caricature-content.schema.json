@@ -24,7 +24,7 @@
     },
     "image_list": {
       "bsonType": "array",
-      "description": "当前图片地址"
+      "description": "当前漫画图片内容"
     },
     "create_date": {
       "bsonType": "array",
