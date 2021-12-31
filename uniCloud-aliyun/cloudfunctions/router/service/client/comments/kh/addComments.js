@@ -1,4 +1,5 @@
 "use strict";
+const formRules = require("../../utils/formRules.js");
 module.exports = {
   /**
    * 此函数名称
@@ -25,25 +26,29 @@ module.exports = {
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
     const dbName = "opendb-caricature-comments";
-    let { caricature_id, comment_content,comment_type,reply_comment_id } = data;
-    // 可写与数据库的交互逻辑等等
-	if (vk.pubfn.isNullOne(caricature_id) || vk.pubfn.isNullOne(comment_content) || vk.pubfn.isNullOne(comment_type)) {
-	  return { code: -1, msg: "参数错误" };
-	}
-	if(comment_type == '0'){
-		res.id = await vk.baseDao.add({
-		  dbName,
-		  dataJson: {
-		    caricature_id,
-		    user_id:uid,
-			comment_content,
-			comment_type,
-			comment_date:new Date().getTime(),
-		  },
-		});
-	}else if(comment_type == '1'){
-	}
-
+    let { caricature_id, comment_content, comment_type, reply_user_id, reply_comment_id } = data;
+    const ruleList =
+      comment_type == "1"
+        ? ["caricature_id", "comment_content", "comment_type", "reply_user_id", "reply_comment_id"]
+        : ["caricature_id", "comment_content", "comment_type"];
+    let formRulesRes = await formRules.add(event, ruleList);
+    if (formRulesRes.code !== 0) {
+      return formRulesRes;
+    }
+    //新增参数
+    const parm = {
+      caricature_id,
+      user_id: uid,
+      comment_content,
+      comment_type,
+      reply_user_id,
+      reply_comment_id,
+      comment_date: new Date().getTime(),
+    };
+    res.id = await vk.baseDao.add({
+      dbName,
+      dataJson: parm,
+    });
     // 业务逻辑结束-----------------------------------------------------------
     return res;
   },

@@ -13,7 +13,7 @@
     },
     "user_id": {
       "bsonType": "string",
-      "description": "漫画作者ID， 参考`uni-id-users` 表",
+      "description": "发布者ID， 参考`uni-id-users` 表",
       "foreignKey": "uni-id-users._id",
       "defaultValue": {
         "$env": "uid"

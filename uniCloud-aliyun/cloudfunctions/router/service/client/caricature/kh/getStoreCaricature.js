@@ -24,22 +24,34 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
-	res = await vk.baseDao.selects({
-	  dbName: "opendb-caricature-favorite",// 主表名
-	  getCount: false, // 是否需要同时查询满足条件的记录总数量
-	  // 主表where条件
-	  whereJson: {
-		user_id:uid
-	  },
+    res = await vk.baseDao.selects({
+      dbName: "opendb-caricature-favorite", // 主表名
+      pageIndex: 1,
+      pageSize: 999,
+      getCount: false, // 是否需要同时查询满足条件的记录总数量
+      // 主表where条件
+      whereJson: {
+        user_id: uid,
+      },
 
-		// 副表列表
-		foreignDB: [{
-		  dbName: "opendb-caricature-data",
-		  localKey: "caricature_id",
-		  foreignKey: "_id",
-		  limit: 1,
-		}]
-	});
+      // 副表列表
+      foreignDB: [
+        {
+          dbName: "opendb-caricature-data",
+          localKey: "caricature_id",
+          foreignKey: "_id",
+          limit: 1,
+          fieldJson: {
+            author: true,
+            category_id: true,
+            name: true,
+            avatar: true,
+            view_count: true,
+            like_count: true,
+          },
+        },
+      ],
+    });
 
     // 业务逻辑结束-----------------------------------------------------------
     return res;

@@ -36,10 +36,12 @@ module.exports = {
         // 条件
       },
       fieldJson: {
-        nickname: true,
-        gender: true,
-        username: true,
+        author: true,
+        category_id: true,
+        name: true,
         avatar: true,
+        view_count: true,
+        like_count: true,
       },
     });
 
