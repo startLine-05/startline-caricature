@@ -39,46 +39,42 @@ module.exports = {
 			msg: ""
 		};
 		// 业务逻辑开始-----------------------------------------------------------
-		const dbName = "opendb-caricature-data";
 		let {
 			caricature_id
 		} = data;
+		// 可写与数据库的交互逻辑等等
 		if (vk.pubfn.isNullOne(caricature_id)) {
 			return {
 				code: -1,
 				msg: "参数错误"
 			};
 		}
-		// 可写与数据库的交互逻辑等等
-		res.data = await vk.baseDao.selects({
-			dbName: "opendb-caricature-data",
-			getOne: true, // 只返回第一条数据
-			getMain: true, // 直接返回数据库查询到的数据（不带code,rows等参数）
+		res = await vk.baseDao.selects({
+			dbName: "opendb-caricature-comments", // 主表名
+			  pageIndex: 1, // 查询第几页
+			  pageSize: 999, // 每页多少条数据
+			getCount: false, // 是否需要同时查询满足条件的记录总数量
 			// 主表where条件
 			whereJson: {
-				_id: caricature_id
+				caricature_id,
 			},
-			foreignDB: [
-				//查漫画内容
-				{
-					dbName: "opendb-caricature-content",
-					localKey: "_id",
-					foreignKey: "caricature_id",
-					// 副表字段显示规则
-					fieldJson: {
-						"_id":true,
-					    "current_name":true,
-					    "current_number":true,
-					},
-				},
-			]
+			// 副表列表
+			foreignDB: [{
+				dbName: "uni-id-users",
+				localKey: "user_id",
+				foreignKey: "_id",
+				limit: 1,
+				as: "userInfo",
+				  // 副表字段显示规则
+				  fieldJson: {
+					  "nickname":true,
+					  "gender":true,
+					  "username":true,
+					  "avatar":true,
+				  },
+			}]
 		});
-		// 下方代码是演示调用 h获取评论的云函数	
-		const getCommentsService = vk.require("service/client/comments/pub/getComments");
-		const getCommentsRes = await getCommentsService.main({
-		  ...event,  
-		},util);
-		res.data.commentsList = getCommentsRes.rows
+
 		// 业务逻辑结束-----------------------------------------------------------
 		return res;
 	},

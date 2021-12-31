@@ -24,24 +24,25 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
-    const dbName = "opendb-caricature-data";
-    let { pageIndex, pageSize } = data;
+    const dbName = "opendb-caricature-comments";
+    let { caricature_id, comment_content,comment_type,reply_comment_id } = data;
     // 可写与数据库的交互逻辑等等
-    res = await vk.baseDao.select({
-      dbName, // 表名
-      getMain: false, // 是否只返回rows数据
-      pageIndex, // 当前第几页
-      pageSize, // 每页条数
-      whereJson: {
-        // 条件
-      },
-      fieldJson: {
-        nickname: true,
-        gender: true,
-        username: true,
-        avatar: true,
-      },
-    });
+	if (vk.pubfn.isNullOne(caricature_id) || vk.pubfn.isNullOne(comment_content) || vk.pubfn.isNullOne(comment_type)) {
+	  return { code: -1, msg: "参数错误" };
+	}
+	if(comment_type == '0'){
+		res.id = await vk.baseDao.add({
+		  dbName,
+		  dataJson: {
+		    caricature_id,
+		    user_id:uid,
+			comment_content,
+			comment_type,
+			comment_date:new Date().getTime(),
+		  },
+		});
+	}else if(comment_type == '1'){
+	}
 
     // 业务逻辑结束-----------------------------------------------------------
     return res;

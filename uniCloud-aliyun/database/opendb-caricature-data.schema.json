@@ -47,6 +47,14 @@
       "label": "封面大图",
       "trim": "both"
     },
+	
+	"detail_avatar": {
+	  "bsonType": "string",
+	  "title": "详情大图",
+	  "description": "详情图地址",
+	  "label": "详情大图",
+	  "trim": "both"
+	},
 
     "content": {
       "bsonType": "array",
@@ -55,6 +63,7 @@
       "label": "漫画内容",
       "trim": "right"
     },
+	
     "excerpt": {
       "bsonType": "string",
       "title": "漫画简介",
