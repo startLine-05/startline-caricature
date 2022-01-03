@@ -50,11 +50,13 @@ module.exports = {
           dbName: "opendb-caricature-content",
           localKey: "_id",
           foreignKey: "caricature_id",
+          as: "caricatureContentList",
           // 副表字段显示规则
           fieldJson: {
             _id: true,
             current_name: true,
             current_number: true,
+            create_date: true,
           },
         },
       ],
