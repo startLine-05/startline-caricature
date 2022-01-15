@@ -24,7 +24,7 @@ module.exports = {
 					"auth": {
 						"user": "startline_05@163.com",
 						"pass": "AWTUPQGFNTZPAACF",
-						"subject":'漫画APP邮箱绑定'  //邮件主题
+						"subject":'漫画APP邮箱绑定'  //邮件发送主题
 					}
 				}
 			},
