@@ -34,6 +34,11 @@
       "bsonType": "int",
       "description": "评论喜欢数、点赞数"
     },
+	"like_user": {
+	  "bsonType": "array",
+	  "description": "评论喜欢数、点赞用户集合"
+	},
+	
     "comment_type": {
       "bsonType": "int",
       "description": "回复类型： 0 针对漫画的回复  1 针对评论的回复"
@@ -48,6 +53,11 @@
       "description": "被回复的评论ID，comment_type为1时有效",
       "foreignKey": "opendb-news-comments._id"
     },
+	"parent_comment_id": {
+	  "bsonType": "string",
+	  "description": "在主哪条评论下评论ID，comment_type为1时有效",
+	  "foreignKey": "opendb-news-comments._id"
+	},
     "comment_date": {
       "bsonType": "timestamp",
       "description": "评论发表时间",

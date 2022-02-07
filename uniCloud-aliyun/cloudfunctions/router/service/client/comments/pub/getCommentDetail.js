@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
 	/**
-	 * 获取评论列表
+	 * 获取评论详情
 	 * @url user/pub/test1 前端调用的url参数地址
 	 * @description 此函数描述
 	 * @param {Object} data 请求参数
@@ -21,17 +21,15 @@ module.exports = {
 		//  注意: userInfo 和 uid 是可信任的，但默认只有kh目录下的函数才有此值
 		let { data = {}, userInfo, util, filterResponse, originalParam } = event;
 		let { customUtil, uniID, config, pubFun, vk, db, _ } = util;
-		let { uid, pageIndex = 1, pageSize = 10, type = '1' } = data;
+		let { uid, pageIndex = 1, pageSize = 10 } = data;
 		let res = {
 			code: 0,
 			msg: "",
 		};
-		//排序顺序
-		let sortType = type == '0' ? 'comment_date' : 'like_count'
 		// 业务逻辑开始-----------------------------------------------------------
-		let { caricature_id } = data;
+		let { commentId } = data;
 		// 可写与数据库的交互逻辑等等
-		if (vk.pubfn.isNullOne(caricature_id)) {
+		if (vk.pubfn.isNullOne(commentId)) {
 			return {
 				code: -1,
 				msg: "参数错误",
@@ -44,10 +42,9 @@ module.exports = {
 			getCount: true, // 是否需要同时查询满足条件的记录总数量
 			// 主表where条件
 			whereJson: {
-				caricature_id,
-				comment_type: '0'
+				_id: commentId,
 			},
-			sortArr: [{ "name": sortType, "type": "desc" }],
+
 			foreignDB: [
 				// 回复本人副表
 				{
@@ -88,7 +85,7 @@ module.exports = {
 				level: 1, // 查询返回的树的最大层级。超过设定层级的节点不会返回。默认10级，最大15，最小1
 				limit: 500, // 每一级最大返回的数据。
 				whereJson: {
-					caricature_id,
+					parent_comment_id: commentId,
 					comment_type: '1'
 				}
 			}

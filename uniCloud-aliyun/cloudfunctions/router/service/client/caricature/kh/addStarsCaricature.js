@@ -1,7 +1,8 @@
 "use strict";
+const formRules = require("../../utils/formRules.js");
 module.exports = {
   /**
-   * 此函数名称
+   * 添加漫画收藏接口
    * @url user/pub/test1 前端调用的url参数地址
    * @description 此函数描述
    * @param {Object} data 请求参数
@@ -24,34 +25,47 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
-    res = await vk.baseDao.selects({
-      dbName: "opendb-caricature-favorite", // 主表名
-      pageIndex: 1,
-      pageSize: 999,
-      getCount: false, // 是否需要同时查询满足条件的记录总数量
-      // 主表where条件
-      whereJson: {
-        user_id: uid,
-      },
+    const dbName = "opendb-caricature-favorite";
+    let { option, caricature_id } = data;
+    //检验值
+    let formRulesRes = await formRules.add(event, ["caricature_id", "option"]);
+    if (formRulesRes.code !== 0) {
+      return formRulesRes;
+    }
+    if (option == "add") {
+      //判断是否存在集数
+      let num = await vk.baseDao.count({
+        dbName,
+        whereJson: {
+          caricature_id,
+          user_id: uid,
+        },
+      });
+      console.log(num);
+      if (num > 0) {
+        return { code: -1, msg: "已经收藏过请勿添加" };
+      }
 
-      // 副表列表
-      foreignDB: [
-        {
-          dbName: "opendb-caricature-data",
-          localKey: "caricature_id",
-          foreignKey: "_id",
-          limit: 1,
-          fieldJson: {
-            author: true,
-            category_id: true,
-            name: true,
-            avatar: true,
-            view_count: true,
-            like_count: true,
+      res.id = await vk.baseDao.add({
+        dbName,
+        dataJson: {
+          caricature_id: caricature_id,
+          user_id: uid,
+          create_date: new Date().getTime(),
+        },
+      });
+    } else {
+      // 返回被删除的记录条数
+      res.id = await vk.baseDao.del({
+        dbName,
+        whereJson: {
+          whereJson: {
+            caricature_id,
+            user_id: uid,
           },
         },
-      ],
-    });
+      });
+    }
 
     // 业务逻辑结束-----------------------------------------------------------
     return res;

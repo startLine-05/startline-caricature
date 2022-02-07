@@ -28,6 +28,11 @@
       "description": "用户昵称",
       "trim": "both"
     },
+	"signature": {
+	  "bsonType": "string",
+	  "title": "签名",
+	  "description": "用户签名"
+	},
     "gender": {
       "bsonType": "int",
       "title": "性别",

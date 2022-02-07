@@ -2,7 +2,7 @@
 const formRules = require("../../utils/formRules.js");
 module.exports = {
   /**
-   * 添加评论
+   * 设置评论点赞
    * @url user/pub/test1 前端调用的url参数地址
    * @description 此函数描述
    * @param {Object} data 请求参数
@@ -26,30 +26,42 @@ module.exports = {
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
     const dbName = "opendb-caricature-comments";
-    let { caricature_id, comment_content, comment_type, reply_user_id, reply_comment_id,parent_comment_id } = data;
-    const ruleList =
-      comment_type == "1"
-        ? ["caricature_id", "comment_content", "comment_type", "reply_user_id", "reply_comment_id","parent_comment_id"]
-        : ["caricature_id", "comment_content", "comment_type"];
+    let { comments_id, type = '1', } = data;
+    const ruleList = ["comments_id",]
+
     let formRulesRes = await formRules.add(event, ruleList);
+	
     if (formRulesRes.code !== 0) {
       return formRulesRes;
     }
-    //新增参数
-    const parm = {
-      caricature_id,
-      user_id: uid,
-      comment_content,
-      comment_type,
-      reply_user_id,
-      reply_comment_id,
-	  parent_comment_id,
-      comment_date: new Date().getTime(),
-    };
-    res.id = await vk.baseDao.add({
-      dbName,
-      dataJson: parm,
-    });
+	
+	let { like_user = [] } = await vk.baseDao.findById({
+	  dbName,
+	  id:comments_id,
+	});
+	
+	let index = like_user.indexOf(uid)
+	if(type == '1'){
+		if(index >= 0){
+			return {code :1,msg: "请勿重复点赞" };
+		}
+		like_user.push(uid)
+	}else{
+		if(index < 0){
+			return {code :1,msg: "该用户还未点赞" };
+		}
+		like_user.splice(index,1)
+	}
+	
+	res.data = await vk.baseDao.updateById({
+	  dbName,
+	  id:comments_id,
+	  dataJson:{
+	    like_user,
+		like_count:like_user.length,
+	  },
+	});
+
     // 业务逻辑结束-----------------------------------------------------------
     return res;
   },

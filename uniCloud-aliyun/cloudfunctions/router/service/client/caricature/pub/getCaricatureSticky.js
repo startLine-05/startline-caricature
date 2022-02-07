@@ -1,8 +1,7 @@
 "use strict";
-const formRules = require("../../utils/formRules.js");
 module.exports = {
   /**
-   * 此函数名称
+   * 随机获取置顶漫画
    * @url user/pub/test1 前端调用的url参数地址
    * @description 此函数描述
    * @param {Object} data 请求参数
@@ -22,50 +21,17 @@ module.exports = {
     //  注意: userInfo 和 uid 是可信任的，但默认只有kh目录下的函数才有此值
     let { data = {}, userInfo, util, filterResponse, originalParam } = event;
     let { customUtil, uniID, config, pubFun, vk, db, _ } = util;
-    let { uid } = data;
+    let { size = 5 } = data;
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
-    const dbName = "opendb-caricature-favorite";
-    let { option, caricature_id } = data;
-    //检验值
-    let formRulesRes = await formRules.add(event, ["caricature_id", "option"]);
-    if (formRulesRes.code !== 0) {
-      return formRulesRes;
-    }
-    if (option == "add") {
-      //判断是否存在集数
-      let num = await vk.baseDao.count({
-        dbName,
-        whereJson: {
-          caricature_id,
-          user_id: uid,
-        },
-      });
-      console.log(num);
-      if (num > 0) {
-        return { code: -1, msg: "已经收藏过请勿添加" };
+    const dbName = "opendb-caricature-data";
+    res.data = await vk.baseDao.sample({
+      dbName, // 表名
+      size, // 随机条数
+      whereJson:{ // 条件
+        is_sticky:true
       }
-
-      res.id = await vk.baseDao.add({
-        dbName,
-        dataJson: {
-          caricature_id: caricature_id,
-          user_id: uid,
-          create_date: new Date().getTime(),
-        },
-      });
-    } else {
-      // 返回被删除的记录条数
-      res.id = await vk.baseDao.del({
-        dbName,
-        whereJson: {
-          whereJson: {
-            caricature_id,
-            user_id: uid,
-          },
-        },
-      });
-    }
+    });
 
     // 业务逻辑结束-----------------------------------------------------------
     return res;

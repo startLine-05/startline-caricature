@@ -8,8 +8,10 @@ const commonRule = {
   comment_type: [{ required: true, message: "评论类型不能为空" }],
   reply_user_id: [{ required: true, message: "被回复的用户ID不能为空" }],
   reply_comment_id: [{ required: true, message: "被回复的评论ID不能为空" }],
+  parent_comment_id: [{ required: true, message: "被回复的父评论ID不能为空" }],
   option: [{ required: true, message: "操作类型不能为空" }],
   content_id: [{ required: true, message: "漫画内容ID不能为空" }],
+  comments_id: [{ required: true, message: "评论ID不能为空" }],
 };
 class Util {
   constructor() {}

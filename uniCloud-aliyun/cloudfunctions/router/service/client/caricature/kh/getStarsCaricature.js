@@ -1,8 +1,7 @@
 "use strict";
-const formRules = require("../../utils/formRules.js");
 module.exports = {
   /**
-   * 添加评论
+   * 此函数名称
    * @url user/pub/test1 前端调用的url参数地址
    * @description 此函数描述
    * @param {Object} data 请求参数
@@ -25,31 +24,36 @@ module.exports = {
     let { uid } = data;
     let res = { code: 0, msg: "" };
     // 业务逻辑开始-----------------------------------------------------------
-    const dbName = "opendb-caricature-comments";
-    let { caricature_id, comment_content, comment_type, reply_user_id, reply_comment_id,parent_comment_id } = data;
-    const ruleList =
-      comment_type == "1"
-        ? ["caricature_id", "comment_content", "comment_type", "reply_user_id", "reply_comment_id","parent_comment_id"]
-        : ["caricature_id", "comment_content", "comment_type"];
-    let formRulesRes = await formRules.add(event, ruleList);
-    if (formRulesRes.code !== 0) {
-      return formRulesRes;
-    }
-    //新增参数
-    const parm = {
-      caricature_id,
-      user_id: uid,
-      comment_content,
-      comment_type,
-      reply_user_id,
-      reply_comment_id,
-	  parent_comment_id,
-      comment_date: new Date().getTime(),
-    };
-    res.id = await vk.baseDao.add({
-      dbName,
-      dataJson: parm,
+    res = await vk.baseDao.selects({
+      dbName: "opendb-caricature-favorite", // 主表名
+      pageIndex: 1,
+      pageSize: 999,
+      getCount: false, // 是否需要同时查询满足条件的记录总数量
+      // 主表where条件
+      whereJson: {
+        user_id: uid,
+      },
+
+      // 副表列表
+      foreignDB: [
+        {
+          dbName: "opendb-caricature-data",
+          localKey: "caricature_id",
+          foreignKey: "_id",
+          limit: 1,
+		  as: "starsDetail",
+          fieldJson: {
+            author: true,
+            category_id: true,
+            name: true,
+            avatar: true,
+            view_count: true,
+            like_count: true,
+          },
+        },
+      ],
     });
+
     // 业务逻辑结束-----------------------------------------------------------
     return res;
   },

@@ -2,7 +2,7 @@
 const formRules = require("../../utils/formRules.js");
 module.exports = {
   /**
-   * 此函数名称
+   * 获取漫画内容
    * @url user/pub/test1 前端调用的url参数地址
    * @description 此函数描述
    * @param {Object} data 请求参数
