@@ -12,7 +12,8 @@
     },
     { "path": "pages/caricature/list" },
     { "path": "pages/caricature/content" },
-    { "path": "pages/category/list" }
+    { "path": "pages/category/list" },
+    { "path": "pages/comment/comment" }
   ],
   "subPackages": [
     {
