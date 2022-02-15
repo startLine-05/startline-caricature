@@ -44,6 +44,9 @@ module.exports = {
       reply_user_id,
       reply_comment_id,
 	  parent_comment_id,
+	  //默认值
+	  like_count:0,
+	  like_user:[],
       comment_date: new Date().getTime(),
     };
     res.id = await vk.baseDao.add({

@@ -43,12 +43,12 @@ module.exports = {
 	let index = like_user.indexOf(uid)
 	if(type == '1'){
 		if(index >= 0){
-			return {code :1,msg: "请勿重复点赞" };
+			return {code :0,msg: "请勿重复点赞" };
 		}
 		like_user.push(uid)
 	}else{
 		if(index < 0){
-			return {code :1,msg: "该用户还未点赞" };
+			return {code :0,msg: "该用户还未点赞" };
 		}
 		like_user.splice(index,1)
 	}

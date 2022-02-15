@@ -2,7 +2,7 @@
 const formRules = require("../../utils/formRules.js");
 module.exports = {
 	/**
-	 * 添加漫画收藏接口
+	 * 添加漫画阅读数量接口
 	 * @url user/pub/test1 前端调用的url参数地址
 	 * @description 此函数描述
 	 * @param {Object} data 请求参数
@@ -25,46 +25,22 @@ module.exports = {
 		let { uid } = data;
 		let res = { code: 0, msg: "" };
 		// 业务逻辑开始-----------------------------------------------------------
-		const dbName = "opendb-caricature-favorite";
-		let { option = 'add', caricature_id } = data;
+		const dbCmd = db.command
+		const dbName = "opendb-caricature-data";
+		let { caricature_id } = data;
 		//检验值
-		let formRulesRes = await formRules.add(event, ["caricature_id", "option"]);
+		let formRulesRes = await formRules.add(event, ["caricature_id", ]);
 		if (formRulesRes.code !== 0) {
 			return formRulesRes;
 		}
-		if (option == "add") {
-			//判断是否存在集数
-			let num = await vk.baseDao.count({
-				dbName,
-				whereJson: {
-					caricature_id,
-					user_id: uid,
-				},
-			});
-			console.log(num);
-			if (num > 0) {
-				return { code: -1, msg: "已经收藏过请勿添加" };
-			}
 
-			res.id = await vk.baseDao.add({
-				dbName,
-				dataJson: {
-					caricature_id: caricature_id,
-					user_id: uid,
-					create_date: new Date().getTime(),
-				},
-			});
-		} else {
-			// 返回被删除的记录条数
-			console.log('sssss', caricature_id, uid)
-			res.id = await vk.baseDao.del({
-				dbName,
-				whereJson: {
-					caricature_id: caricature_id,
-					user_id: uid,
-				},
-			});
-		}
+		res.data = await vk.baseDao.updateById({
+			dbName,
+			id: caricature_id,
+			dataJson: {
+				view_count: dbCmd.inc(1),
+			},
+		});
 
 		// 业务逻辑结束-----------------------------------------------------------
 		return res;

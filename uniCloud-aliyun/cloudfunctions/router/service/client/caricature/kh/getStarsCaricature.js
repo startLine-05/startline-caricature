@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   /**
-   * 此函数名称
+   * 获取收藏漫画
    * @url user/pub/test1 前端调用的url参数地址
    * @description 此函数描述
    * @param {Object} data 请求参数
