@@ -1,95 +1,91 @@
 {
-    "id": "vk-unicloud-admin",
-    "name": "vk-unicloud-admin",
-    "version": "1.8.3",
-    "displayName": "【开箱即用】vk-unicloud-admin-快速开发框架-打造unicloud最好用的admin",
-    "description": "vk-unicloud-admin是基于unicloud+uni-id+element+vk-unicloud-router的一套快速PC admin企业级开发框架。小白几分钟即完成一个页面CRUD。",
-    "keywords": [
-        "vk-unicloud-admin",
-        "支持表单可视化拖拽生成代码",
-        "vk云开发",
-        "element、uni-id、vk-unicloud-router、vk-admin",
-        "内置众多API、工具包"
+  "name": "startline-caricature-admin",
+  "version": "1.0.0",
+  "description": "这是一个基于最火之一的前沿技术-微服务开发的漫画网站，前后端采用阿里云的云服务技术一体化技术，包含了前端 vue+云后端 node（云数据库，云函数，云存储）",
+  "keywords": [
+    "uni-cloud",
+    "vk-unicloud-admin",
+    "Vue"
+  ],
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/startLine-05/startline-caricature",
+  "author": "startLine",
+  "license": "Apache",
+  "homepage": "https://github.com/startLine-05/startline-caricature",
+  "dependencies": {
+    "element-ui": "^2.15.7",
+    "umy-ui": "^1.1.6",
+    "vk-unicloud-admin-ui": "^1.8.5"
+  },
+  "engines": {
+    "HBuilderX": "^3.1.10"
+  },
+  "dcloudext": {
+    "category": [
+      "uniCloud",
+      "云端一体项目模板"
     ],
-    "main": "main.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+    "sale": {
+      "regular": {
+        "price": "0.00"
+      },
+      "sourcecode": {
+        "price": "0.00"
+      }
     },
-    "repository": "https://gitee.com/vk-uni/vk-unicloud-admin",
-    "author": "VK",
-    "license": "Apache",
-    "homepage": "https://vkdoc.fsq.pub/admin/",
-    "dependencies": {
-        "element-ui": "^2.15.7",
-        "umy-ui": "^1.1.6",
-        "vk-unicloud-admin-ui": "^1.8.5"
+    "contact": {
+      "qq": ""
     },
-    "engines": {
-        "HBuilderX": "^3.1.10"
+    "declaration": {
+      "ads": "无",
+      "data": "插件不采集任何数据",
+      "permissions": "无"
     },
-    "dcloudext": {
-        "category": [
-            "uniCloud",
-            "云端一体项目模板"
-        ],
-        "sale": {
-            "regular": {
-                "price": "0.00"
-            },
-            "sourcecode": {
-                "price": "0.00"
-            }
+    "npmurl": "https://vkdoc.fsq.pub/admin/"
+  },
+  "uni_modules": {
+    "platforms": {
+      "cloud": {
+        "tcb": "y",
+        "aliyun": "y"
+      },
+      "client": {
+        "App": {
+          "app-vue": "n",
+          "app-nvue": "n"
         },
-        "contact": {
-            "qq": "370725567"
+        "H5-mobile": {
+          "Safari": "y",
+          "Android Browser": "y",
+          "微信浏览器(Android)": "y",
+          "QQ浏览器(Android)": "y"
         },
-        "declaration": {
-            "ads": "无",
-            "data": "插件不采集任何数据",
-            "permissions": "无"
+        "H5-pc": {
+          "Chrome": "y",
+          "IE": "u",
+          "Edge": "y",
+          "Firefox": "y",
+          "Safari": "y"
         },
-        "npmurl": "https://vkdoc.fsq.pub/admin/"
-    },
-    "uni_modules": {
-        "platforms": {
-            "cloud": {
-                "tcb": "y",
-                "aliyun": "y"
-            },
-            "client": {
-                "App": {
-                    "app-vue": "n",
-                    "app-nvue": "n"
-                },
-                "H5-mobile": {
-                    "Safari": "y",
-                    "Android Browser": "y",
-                    "微信浏览器(Android)": "y",
-                    "QQ浏览器(Android)": "y"
-                },
-                "H5-pc": {
-                    "Chrome": "y",
-                    "IE": "u",
-                    "Edge": "y",
-                    "Firefox": "y",
-                    "Safari": "y"
-                },
-                "小程序": {
-                    "微信": "n",
-                    "阿里": "n",
-                    "百度": "n",
-                    "字节跳动": "n",
-                    "QQ": "n"
-                },
-                "快应用": {
-                    "华为": "n",
-                    "联盟": "n"
-                },
-                "Vue": {
-                    "vue2": "y",
-                    "vue3": "u"
-                }
-            }
+        "小程序": {
+          "微信": "n",
+          "阿里": "n",
+          "百度": "n",
+          "字节跳动": "n",
+          "QQ": "n"
+        },
+        "快应用": {
+          "华为": "n",
+          "联盟": "n"
+        },
+        "Vue": {
+          "vue2": "y",
+          "vue3": "u"
         }
+      }
     }
+  }
 }
