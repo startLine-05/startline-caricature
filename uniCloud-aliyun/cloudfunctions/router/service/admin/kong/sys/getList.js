@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * 查询多条记录 分页
+   * 模板 查询多条记录 分页
    * @url admin/kong/sys/getList 前端调用的url参数地址
    * data 请求参数 说明
    * @param {Number}         pageIndex 当前页码
