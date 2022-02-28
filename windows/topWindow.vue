@@ -3,7 +3,7 @@
     <!-- 左侧 -->
     <view class="left">
       <navigator class="logo" open-type="reLaunch" url="/">
-        <image :src="logo2" mode="aspectFill"></image>
+        <image :src="logo2" mode="scaleToFill"></image>
       </navigator>
     </view>
     <!-- 右侧 -->
