@@ -2,7 +2,7 @@
 
 ## 简介
 
-> 这是一个基于最火之一的前沿技术-微服务开发的漫画网站，前后端采用阿里云的云服务技术一体化技术，包含了前端 vue+云后端 node（云数据库，云函数，云存储）
+> 这是一个基于最火之一的前沿技术-微服务开发的漫画网站，前后端采用阿里云的云服务技术一体化技术，包含了前端 vue + 云后端 node（云数据库，云函数，云存储）
 
 ## 准备前序
 
@@ -22,12 +22,12 @@
 #### 下载 Hbuilderx 编译器
 
 1. [Hbuilderx 下载地址](https://www.dcloud.io/hbuilderx.html)
-2. 此项目有 scss, 等预处理, 请先下载对应的插件后运行
+2. 此项目有 scss,uni-app 等预处理, 请先下载对应的插件后运行。
 
 ### 云服务
 
 1. 请先按照相关文档申请云空间服务。[uniCloud 控制台](https://unicloud.dcloud.net.cn/)
-2. 请先将 admin 端 绑定云空间之后，在将此项目关联 admin 云空间（请移至 管理台修改后端配置参数）
+2. 请先将 admin 端 绑定云空间之后，并且完成初始化向导。
 
 #### 配置敏感文本，图片检测，短信验证
 
@@ -90,10 +90,11 @@ src
 └─static                    // 静态资源
 └─pages_template            // 框架模板
 └─store                     // vuex
-└─uni_modules               // vuex
-└─uniCloud-aliyun           // uni-cloud
+└─uni_modules               // 差距管理模块
+└─uniCloud-aliyun           // uni-cloud开发目录
 └─App.vue                   // 入口vue
 └─main                      // 入口文件
+└─app.config                // 配置文件
 ```
 
 ### 后端路由目录
@@ -149,6 +150,7 @@ src
 │ └── muban_easy.js────────# 云函数模板（简易版）
 └─────────────────────────────────
 ```
+<b>其中目录结构如下<b>
 
 1. caricature 漫画模块
 2. caricatureContent 漫画内容管理
@@ -177,8 +179,6 @@ npm install
 ```
 
 ## 预览
-
-> 请使用移动端浏览
 
 > 账号：startline_05@163.com
 > 密码：123456
