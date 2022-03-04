@@ -125,7 +125,7 @@ export default {
             current_number: [{ required: true, message: "当前集数为必填字段", trigger: "blur" }],
             current_name: [
               { required: true, message: "集数名称为必填字段", trigger: "blur" },
-              { min: 2, max: 10, message: "集数名称长度在 2 到 10 个字符", trigger: "blur" },
+              { min: 2, max: 20, message: "集数名称长度在 2 到 10 个字符", trigger: "blur" },
             ],
           },
           // add 代表添加 update 代表修改
