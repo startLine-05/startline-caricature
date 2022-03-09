@@ -51,6 +51,7 @@ module.exports = {
 					localKey: "_id",
 					foreignKey: "caricature_id",
 					as: "caricatureContentList",
+					sortArr:[{ "name":"current_number", "type":"desc" }],
 					// 副表字段显示规则
 					fieldJson: {
 						_id: true,
