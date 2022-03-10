@@ -150,6 +150,7 @@ src
 │ └── muban_easy.js────────# 云函数模板（简易版）
 └─────────────────────────────────
 ```
+
 <b>其中目录结构如下<b>
 
 1. caricature 漫画模块
@@ -180,10 +181,12 @@ npm install
 
 ## 预览
 
-> 账号：startline_05@163.com
+> 展示账号(部分权限)：startline_05@163.com
 > 密码：123456
 
 [在线预览](https://static-3ea692f6-5a08-4910-a093-a4a8fab5ac7c.bspapp.com/admin)
+
+![效果图.png](https://static-3ea692f6-5a08-4910-a093-a4a8fab5ac7c.bspapp.com/static/8e15430015980f214284b784b9dcda8.png)
 
 ## Browsers support
 
