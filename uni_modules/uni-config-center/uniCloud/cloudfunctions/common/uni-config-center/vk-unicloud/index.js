@@ -22,8 +22,8 @@ module.exports = {
 					"port": 465,
 					"secure": true,
 					"auth": {
-						"user": "startline_05@163.com",
-						"pass": "AWTUPQGFNTZPAACF",
+						"user": "",
+						"pass": "",
 						"subject":'漫画APP邮箱绑定'  //邮件发送主题
 					}
 				}
