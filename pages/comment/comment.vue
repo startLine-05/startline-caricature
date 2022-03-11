@@ -29,7 +29,7 @@ export default {
       // 表格相关开始 -----------------------------------------------------------
       table: {
         // 表格数据请求地址
-        action: "admin/comment/sys/getCommentList",
+        action: "admin/comment/sys/getList",
 
         // 表格字段显示规则
         columns: [
