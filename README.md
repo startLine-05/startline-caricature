@@ -29,6 +29,10 @@
 1. 请先按照相关文档申请云空间服务。[uniCloud 控制台](https://unicloud.dcloud.net.cn/)
 2. 请先将 admin 端 绑定云空间之后，并且完成初始化向导。
 
+#### 注意事项
+
+######  重新获取uuid
+请用Hbuilderx 编译器打开 manifest.json 文件已用于重新获取 uuid
 #### 配置敏感文本，图片检测，短信验证
 
 > 登录或注册的验证码 需要配置发送邮件的邮箱
