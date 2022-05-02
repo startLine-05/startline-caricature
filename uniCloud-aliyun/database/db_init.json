@@ -563,7 +563,13 @@
 				"menu_id": "system-uni-opendb-admin-log",
 				"name": "系统操作日志",
 				"parent_id": "system-uni"
-			}
+			},
+			{"_id":{"$oid":"61b065ba39bf100001ca6d6f"},"menu_id":"my_caricature","name":"漫画设置","icon":"el-icon-collection","sort":1,"enable":true,"_add_time":1638950331009,"_add_time_str":"2021-12-08 15:58:51"},
+			{"_id":{"$oid":"61b065ba39bf100001ca6d70"},"menu_id":"my_caricature_sort","name":"分类管理","url":"/pages/category/list","icon":"el-icon-folder-opened","sort":0,"parent_id":"my_caricature","enable":true,"_add_time":1638950331009,"_add_time_str":"2021-12-08 15:58:51"},
+			{"_id":{"$oid":"61b065ba39bf100001ca6d72"},"menu_id":"my_caricature_content","name":"漫画内容详情","url":"/pages/caricature/content","icon":"el-icon-warning","sort":0,"parent_id":"my_caricature","enable":true,"_add_time":1638950331009,"_add_time_str":"2021-12-08 15:58:51","hidden_menu":true},
+			{"_id":{"$oid":"61b065ba39bf100001ca6d71"},"menu_id":"my_caricature_list","name":"漫画管理","url":"/pages/caricature/list","icon":"el-icon-collection-tag","sort":0,"parent_id":"my_caricature","enable":true,"_add_time":1638950331009,"_add_time_str":"2021-12-08 15:58:51"},
+			{"_id":{"$oid":"620b17af43537b00016aa6fc"},"menu_id":"my_comment","name":"评论管理","url":"/pages/comment/comment","icon":"vk-icon-comment_light","sort":0,"enable":true,"_add_time":1644894128307,"_add_time_str":"2022-02-15 11:02:08","parent_id":"community"},
+			{"_id":{"$oid":"622032e7432b1600018d5e27"},"menu_id":"community","name":"漫画社区","comment":"漫画社区管理","url":"","icon":"vk-icon-round_favor_fill","sort":0,"enable":true,"_add_time":1646277351679,"_add_time_str":"2022-03-03 11:15:51"}
 		],
 		"index": [
 			{
